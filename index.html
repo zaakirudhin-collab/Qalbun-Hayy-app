@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5b4bc4">
+<meta name="description" content="A living heart — remembrance for you and your family, every day">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Qalbun Hayy">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Qalbun Hayy — A Living Heart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<script src="quran-data.js" defer></script>
+<style>
+  :root{
+    --bg:#f6f4fb; --card:#ffffff; --ink:#2e2a3b; --muted:#8a85a0; --line:#ece8f6;
+    --lilac:#ece6fd; --lilac-ink:#6f5fd0;
+    --mint:#dcf3e8; --mint-ink:#2f8f66;
+    --peach:#fde6da; --peach-ink:#cf6c43;
+    --sky:#e1eefb; --sky-ink:#3d7cc0;
+    --butter:#fdf3d1; --butter-ink:#b48a12;
+    --rose:#fde3ea; --rose-ink:#c94d6f;
+    --soft:#faf9fd; --paper:#fffdf7; --paper-line:#efe6c8; --tick-line:#d6d0ea; --shadow:rgba(80,60,140,.08);
+    --hdr-bg:transparent; --hdr-ink:var(--ink); --hdr-sub:var(--muted); --logo-bg:var(--lilac); --logo-ink:var(--lilac-ink);
+  }
+  /* Dark */
+  [data-theme="dark"]{
+    --bg:#15131d; --card:#1f1c2a; --ink:#ebe8f5; --muted:#9a94b3; --line:#2e2a3d;
+    --lilac:#2f2850; --lilac-ink:#b8a9ff;
+    --mint:#193527; --mint-ink:#6fd6a4;
+    --peach:#3d2518; --peach-ink:#f0a07a;
+    --sky:#1b2b40; --sky-ink:#7fb3f0;
+    --butter:#3a3113; --butter-ink:#e6c25a;
+    --rose:#3d1b26; --rose-ink:#f08aa8;
+    --soft:#252132; --paper:#262235; --paper-line:#3a3550; --tick-line:#4a4463; --shadow:rgba(0,0,0,.4);
+    --logo-bg:var(--lilac); --logo-ink:var(--lilac-ink);
+  }
+  /* Bold header (phone-app style) */
+  [data-theme="bold"]{
+    --hdr-bg:linear-gradient(135deg,#5b4bc4,#7a63e0); --hdr-ink:#fff; --hdr-sub:rgba(255,255,255,.78); --logo-bg:rgba(255,255,255,.18); --logo-ink:#fff;
+    --bg:#f1eef9;
+  }
+  [data-theme="bold"] body{background:var(--bg)}
+  [data-theme="bold"] .top{background:var(--hdr-bg);color:var(--hdr-ink);margin:-22px -16px 16px;padding:18px 16px 18px;border-radius:0 0 26px 26px;box-shadow:0 8px 24px rgba(91,75,196,.25)}
+  [data-theme="bold"] .brand small{color:var(--hdr-sub)}
+  [data-theme="bold"] .status{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
+  [data-theme="bold"] .status.ok{color:#fff}
+  [data-theme="bold"] .views{background:#fff}
+  [data-theme="bold"] .vtab.on{background:#5b4bc4;color:#fff}
+  [data-theme="bold"] .rec .card-h{background:#5b4bc4;color:#fff} [data-theme="bold"] .rec .chip{background:rgba(255,255,255,.2);color:#fff}
+  [data-theme="bold"] .main .card-h{background:#3d7cc0;color:#fff} [data-theme="bold"] .main .chip{background:rgba(255,255,255,.2);color:#fff}
+  [data-theme="bold"] .card.week .card-h{background:#2f8f66;color:#fff} [data-theme="bold"] .card.week .chip{background:rgba(255,255,255,.2);color:#fff}
+  [data-theme="bold"] .card.days .card-h{background:#b48a12;color:#fff} [data-theme="bold"] .card.days .chip{background:rgba(255,255,255,.2);color:#fff}
+  [data-theme="bold"] .card-h .ghost{background:rgba(255,255,255,.22);color:#fff}
+  [data-theme="bold"] .card-h .ghost:hover{background:rgba(255,255,255,.35)}
+  [data-theme="dark"]{color-scheme:dark}
+  [data-theme="dark"] .ghost{background:rgba(255,255,255,.08)}
+  [data-theme="dark"] .ghost:hover{background:rgba(255,255,255,.16);color:var(--ink)}
+  [data-theme="dark"] .tab.on{background:var(--lilac-ink);color:#15131d}
+  [data-theme="dark"] .tick{background:var(--soft)}
+  [data-theme="dark"] .bar i{background:linear-gradient(90deg,#8f7cf0,#5fc795)}
+  [data-theme="dark"] .ctr-b.minus{background:var(--soft)}
+  [data-theme="dark"] .ctr-bar{background:#2e2a3d}
+  [data-theme="dark"] input.note:not(:placeholder-shown),[data-theme="dark"] .nrow .nsur.set{color:var(--mint-ink)}
+  [data-theme="dark"] .toast{background:#ebe8f5;color:#15131d}
+  [data-theme="dark"] .wk-day.future .wk-col{background:repeating-linear-gradient(45deg,#1f1c2a,#1f1c2a 6px,#262235 6px,#262235 12px)}
+  [data-theme="dark"] .wk-col b{color:var(--ink)}
+  [data-theme="dark"] .row.pri{background:#2a2614}
+  [data-theme="dark"] li.row:hover{background:var(--soft)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito",system-ui,-apple-system,Segoe UI,sans-serif;font-size:15px;line-height:1.4}
+  .wrap{max-width:760px;margin:0 auto;padding:22px 16px 40px}
+  svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+  /* Header */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .logo{width:38px;height:38px;border-radius:12px;background:var(--logo-bg);color:var(--logo-ink);display:grid;place-items:center}
+  .brand h1{font-size:19px;margin:0;font-weight:800;letter-spacing:-.2px;display:flex;align-items:baseline;gap:8px}
+  .ar-title{font-family:"Amiri",serif;font-size:17px;font-weight:400;color:var(--lilac-ink);opacity:.9}
+  [data-theme="bold"] .ar-title{color:#fff}
+  .brand small{color:var(--muted);font-size:12.5px}
+  .status{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);background:var(--card);border:1px solid var(--line);padding:5px 10px;border-radius:99px}
+  .status svg{width:14px;height:14px}
+  .status.ok{color:var(--mint-ink)}
+
+  /* Date bar */
+  .datebar{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .navbtn{width:34px;height:34px;border-radius:10px;background:var(--soft);display:grid;place-items:center;color:var(--muted)}
+  .navbtn:hover{background:var(--lilac);color:var(--lilac-ink)}
+  .dateinfo{flex:1;min-width:0}
+  .dateinfo .d{font-weight:800;font-size:17px}
+  .dateinfo .rel{font-size:12.5px;color:var(--muted)}
+  .todaybtn{font-size:12.5px;font-weight:700;color:var(--lilac-ink);background:var(--lilac);padding:6px 11px;border-radius:99px}
+  .todaybtn[hidden]{display:none}
+  .navbtn.cal{position:relative;overflow:hidden;cursor:pointer}
+  .navbtn.cal input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;font-size:16px}
+  .navbtn.cal input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+
+  /* Progress */
+  .stats{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+  .stat.time .val{color:var(--sky-ink)}
+  /* Counters + kids blocks */
+  li.rrow.tall{align-items:flex-start}
+  li.rrow.tall .tick{margin-top:1px}
+  .grid3{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:2px}
+  .ctr{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+  .ctr-top{display:flex;align-items:center;gap:6px}
+  .ctr-l{font-size:13px;font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ctr-v{font-size:13px;font-weight:800;color:var(--lilac-ink);text-align:right;margin-top:4px}
+  .ctr-v small{font-weight:700;color:var(--muted)}
+  .ctr-b{width:26px;height:26px;border-radius:8px;display:grid;place-items:center}
+  .ctr-b svg{width:14px;height:14px;stroke-width:2.6}
+  .ctr-b.plus{background:var(--lilac-ink);color:#fff;width:32px;height:32px;border-radius:10px}
+  .ctr-b.plus svg{width:17px;height:17px;stroke-width:3}
+  .ctr-b.plus:active{transform:scale(.92)}
+  .ctr-b.minus{color:var(--muted);background:var(--card);border:1px solid var(--line)}
+  .ctr-b:disabled{opacity:.35;cursor:default}
+  .ctr-bar{height:8px;background:#ece8f6;border-radius:99px;overflow:hidden;margin-top:7px}
+  .ctr-bar i{display:block;height:100%;background:linear-gradient(90deg,#c7bbf7,#9b8ae6);border-radius:99px;transition:width .25s}
+  .ctr-foot{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:4px}
+  .ctr-sec{font-size:11.5px;font-weight:700;color:var(--sky-ink);background:var(--sky);padding:1px 7px;border-radius:99px;white-space:nowrap}
+  .ctr-v{margin-top:0;display:flex;align-items:center;gap:2px}
+  input.tgt{width:52px;font:inherit;font-size:12.5px;font-weight:800;color:var(--muted);border:1.5px solid transparent;background:transparent;border-radius:7px;padding:2px 4px;outline:none;text-align:center;-moz-appearance:textfield}
+  input.tgt::-webkit-outer-spin-button,input.tgt::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  input.tgt:hover,input.tgt:focus{border-color:var(--line);background:var(--card);color:var(--ink)}
+  .azpick{margin-top:8px;position:relative}
+  select.azsel{width:100%;font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:5px 6px;color:var(--muted);outline:none}
+  select.azsel.set{color:var(--lilac-ink);border-color:#cfc4f3;background:var(--lilac)}
+  .azpop{position:absolute;left:0;top:calc(100% + 6px);z-index:5;width:max(100%,300px);background:var(--paper);border:1px solid var(--paper-line);border-radius:12px;padding:10px 12px;box-shadow:0 8px 20px var(--shadow);display:none}
+  .azpick:hover .azpop,.azpick:focus-within .azpop{display:block}
+  .azar{font-family:"Amiri",serif;font-size:21px;line-height:1.8;text-align:right;color:var(--ink)}
+  .azen{font-size:12.5px;color:var(--ink);opacity:.85;margin-top:4px;line-height:1.45}
+  .dur.fixed.calc{color:var(--sky-ink);background:var(--sky);border-color:transparent}
+  .dur.fixed.calc small{font-weight:600;color:var(--muted)}
+  .ctr.full{background:var(--mint);border-color:transparent}
+  .ctr.full .ctr-bar i{background:linear-gradient(90deg,#9edfc0,#4fb88a)}
+  .ctr.full .ctr-v{color:var(--mint-ink)}
+  .ctr.full .ctr-b.plus{background:var(--mint-ink)}
+  .row.done .ctr-l,.row.done .kidcol{text-decoration:none}
+  .kidcol{display:flex;flex-direction:column;gap:5px;min-width:0}
+  .kidcol .kid{align-self:flex-start}
+  input.note{font:inherit;font-size:12.5px;border:1.5px solid var(--line);background:var(--soft);border-radius:8px;padding:5px 8px;outline:none;width:100%;min-width:0}
+  input.note:focus{border-color:#b6a9f0;background:var(--card)}
+  input.note:not(:placeholder-shown){background:var(--mint);border-color:transparent;color:#24694c;font-weight:600}
+  @media (max-width:560px){ .grid3{grid-template-columns:1fr} }
+  /* Kids names + notes */
+  .kidsgrid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+  .kidhead{display:flex;align-items:center;gap:6px}
+  .kidhead .kid{padding:3px;gap:0}
+  .kidhead .kid i{width:22px;height:22px}
+  .kidhead .kid i svg{width:12px;height:12px}
+  input.kname{flex:1;min-width:0;font:inherit;font-size:13.5px;font-weight:800;border:1.5px solid transparent;background:transparent;border-radius:8px;padding:4px 6px;outline:none;color:var(--ink)}
+  input.kname:hover,input.kname:focus{border-color:var(--line);background:var(--card)}
+  input.kname:placeholder-shown{font-weight:600;color:var(--muted)}
+  .krm{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;color:var(--muted);opacity:0;transition:.15s}
+  .kidcol:hover .krm,.krm:focus{opacity:.6}
+  .krm:hover{opacity:1;background:var(--rose);color:var(--rose-ink)}
+  .krm svg{width:13px;height:13px}
+  .nrow{display:flex;align-items:center;gap:6px}
+  .nrow span{font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;width:50px;flex-shrink:0}
+  .nrow .nsur{flex:1 1 55%;min-width:0;font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);background:var(--soft);border-radius:8px;padding:5px 4px;color:var(--muted);outline:none}
+  .nrow .nsur.set{background:var(--mint);border-color:transparent;color:#24694c}
+  .nrow .note{flex:1 1 45%;width:auto}
+  .addkid{display:flex;align-items:center;justify-content:center;gap:6px;border:1.5px dashed #cfc8e6;border-radius:12px;padding:10px;color:var(--lilac-ink);font-weight:700;font-size:13px;min-height:60px;align-self:stretch}
+  .addkid:hover{background:var(--lilac);border-color:transparent}
+  .addkid svg{width:15px;height:15px}
+  /* Quran picker + verse pop-up */
+  .qpick{display:inline-flex;align-items:center;gap:5px}
+  select.qs{font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);border-radius:9px;padding:4px 6px;background:var(--card);color:var(--lilac-ink);max-width:170px}
+  input.qv{font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);border-radius:9px;padding:4px 6px;width:62px;background:var(--card);color:var(--lilac-ink);outline:none}
+  input.qv:focus,select.qs:focus{border-color:#b6a9f0}
+  .qeye{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:var(--muted);background:var(--bg)}
+  .qeye:hover,.qeye.on{background:var(--lilac);color:var(--lilac-ink)}
+  .qeye svg{width:16px;height:16px}
+  .qpop{width:100%;background:var(--paper);border:1px solid var(--paper-line);border-radius:14px;padding:10px 14px;margin:6px 0 2px 34px;box-shadow:0 6px 18px var(--shadow)}
+  .qhead{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted);font-weight:700;border-bottom:1px dashed var(--paper-line);padding-bottom:6px;margin-bottom:4px}
+  .qar{font-family:"Amiri",serif;font-size:20px;color:var(--ink)}
+  .vrow{display:grid;grid-template-columns:44px 1fr;gap:2px 10px;padding:8px 0;border-bottom:1px dashed var(--paper-line);opacity:.62}
+  .vrow:last-child{border-bottom:none}
+  .vrow.cur{opacity:1;background:var(--butter);margin:0 -8px;padding:8px;border-radius:10px}
+  .vn{font-size:11.5px;font-weight:800;color:var(--butter-ink);padding-top:6px}
+  .var{font-family:"Amiri",serif;font-size:22px;line-height:1.9;text-align:right;color:var(--ink)}
+  .ven{grid-column:2;font-size:13.5px;color:var(--ink);opacity:.85;line-height:1.5}
+  .qload{color:var(--muted);font-size:13px;padding:6px}
+  li.rrow{flex-wrap:wrap}
+  @media (max-width:560px){ .qpop{margin-left:0} }
+  .hright{display:flex;align-items:center;gap:8px}
+  .theme-wrap{position:relative}
+  .themebtn{width:32px;height:32px;border-radius:99px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+  .themebtn:hover{color:var(--lilac-ink)}
+  .themebtn svg{width:16px;height:16px}
+  [data-theme="bold"] .themebtn{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
+  .theme-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:20;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px;width:220px;box-shadow:0 10px 28px var(--shadow);color:var(--ink)}
+  .tm-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:4px 8px 6px}
+  .theme-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px;border-radius:10px;font-weight:700;font-size:13.5px}
+  .theme-menu button:hover{background:var(--soft)}
+  .theme-menu button.on{background:var(--lilac);color:var(--lilac-ink)}
+  .theme-menu button i{width:22px;height:22px;border-radius:7px;border:1px solid var(--line);flex-shrink:0}
+  .theme-menu button small{display:block;font-weight:600;color:var(--muted);font-size:11.5px}
+  .dyk{display:flex;align-items:flex-start;gap:10px;margin:2px 10px 12px;padding:10px 12px;border-radius:12px;background:var(--butter);color:var(--ink)}
+  .dyk .ic{width:26px;height:26px;border-radius:8px;background:var(--card);color:var(--butter-ink);display:grid;place-items:center;flex-shrink:0}
+  .dyk .ic svg{width:15px;height:15px}
+  .dyk .body{flex:1;min-width:0;font-size:13.5px;line-height:1.45}
+  .dyk .body b{color:var(--butter-ink);font-size:11px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:1px}
+  .dyk .body small{display:block;color:var(--muted);font-size:11.5px;font-weight:700;margin-top:2px}
+  .dyk .nx{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:var(--butter-ink);flex-shrink:0}
+  .dyk .nx:hover{background:var(--card)}
+  .dyk .nx svg{width:15px;height:15px}
+  .ctr-eye{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;color:var(--muted);background:var(--card);border:1px solid var(--line)}
+  .ctr-eye:hover,.ctr-eye.on{background:var(--lilac);color:var(--lilac-ink);border-color:transparent}
+  .ctr-eye svg{width:14px;height:14px}
+  .ctr{position:relative}
+  .drpop{position:absolute;right:0;top:calc(100% + 6px);z-index:6;width:min(420px,calc(100vw - 48px));background:var(--paper);border:1px solid var(--paper-line);border-radius:12px;padding:10px 12px;box-shadow:0 8px 20px var(--shadow)}
+  .drpop .azar{font-size:19px}
+  .drpop .src{font-size:11px;font-weight:700;color:var(--muted);margin-top:6px}
+  .langsel{font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 8px;outline:none;cursor:pointer;max-width:140px}
+  [data-theme="bold"] .langsel{background:rgba(255,255,255,.18);border-color:transparent;color:#fff}
+  [data-theme="bold"] .langsel option{color:#2e2a3b}
+  .theme-menu button>span{flex:1;min-width:0}
+  .vtab span,.tab span{pointer-events:none}
+  .nafil{display:inline-flex;align-items:center;gap:6px}
+  .nafil .nv{font-size:13px;font-weight:800;color:var(--peach-ink);min-width:74px;text-align:center}
+  .nafil .ctr-b.plus{background:var(--peach-ink);width:auto;padding:0 10px;gap:3px;display:inline-flex;font-size:12.5px;font-weight:800}
+  .duapick{flex:1 1 230px;max-width:360px;min-width:200px;margin-top:0}
+  .azpop .src{font-size:11px;font-weight:700;color:var(--muted);margin-top:6px}
+  .qnote{font-size:11.5px;font-weight:700;color:var(--muted);padding:6px 0 0}
+  @font-face{font-family:"F-indopak";src:url(indopak.woff2) format("woff2");font-display:swap}
+  @font-face{font-family:"F-hafs";src:url(UthmanicHafs1Ver18.woff2) format("woff2");font-display:swap}
+  .qf-indopak{font-family:"F-indopak","Amiri",serif!important;line-height:2.3!important;font-size:25px!important}
+  .qf-hafs{font-family:"F-hafs","Amiri",serif!important;line-height:2.1!important;font-size:24px!important}
+  .theme-menu{width:250px}
+  .tm-seg{display:flex;gap:4px;background:var(--bg);border-radius:10px;padding:3px;margin:0 4px 8px}
+  .theme-menu .tm-seg button{flex:1;display:block;width:auto;text-align:center;padding:6px 4px;border-radius:8px;font-size:12.5px;color:var(--muted)}
+  .theme-menu .tm-seg button.on{background:var(--lilac-ink);color:#fff}
+  .azpick{display:flex;gap:6px;align-items:center}
+  .azpick .azsel{flex:1;min-width:0}
+  .azpick .qeye{flex-shrink:0}
+  .qeye:disabled{opacity:.35;cursor:default}
+  .qnav{width:30px;height:30px;border-radius:9px;background:var(--card);border:1px solid var(--paper-line);display:grid;place-items:center;color:var(--butter-ink);flex-shrink:0}
+  .qnav:hover{background:var(--butter)}
+  .qnav svg{width:16px;height:16px}
+  .qhead .qmid{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+  .apop .azar{font-size:22px}
+  .apop .src{font-size:11px;font-weight:700;color:var(--muted);margin-top:6px}
+  /* Groups */
+  #recList{padding:8px}
+  li.grp{border:1px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:visible;background:var(--card)}
+  .grp-h{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border-radius:13px;font-weight:800;font-size:14.5px}
+  .grp.open>.grp-h{border-radius:13px 13px 0 0}
+  .grp-h .gi{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;background:var(--card)}
+  .grp-h .gi svg{width:17px;height:17px}
+  .grp-h .gt{flex:1;min-width:0}
+  .grp-h .gc{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:800;padding:3px 9px;border-radius:99px;background:var(--card);color:var(--muted)}
+  .grp-h .gc svg{width:12px;height:12px;stroke-width:3}
+  .grp.full .gc{background:var(--mint-ink);color:#fff}
+  .grp-h .gv{width:26px;height:26px;border-radius:99px;display:grid;place-items:center;background:var(--card);transition:transform .2s}
+  .grp-h .gv svg{width:15px;height:15px;stroke-width:2.6}
+  .grp.open .gv{transform:rotate(180deg)}
+  .g-q .grp-h{background:var(--lilac)} .g-q .gi,.g-q .gv{color:var(--lilac-ink)}
+  .g-z .grp-h{background:var(--rose)} .g-z .gi,.g-z .gv{color:var(--rose-ink)}
+  .g-f .grp-h{background:var(--mint)} .g-f .gi,.g-f .gv{color:var(--mint-ink)}
+  .g-p .grp-h{background:var(--peach)} .g-p .gi,.g-p .gv{color:var(--peach-ink)}
+  ul.grp-b{padding:4px 4px 6px}
+  .nafil.du .nv{color:var(--rose-ink);min-width:52px}
+  .nafil.du .ctr-b.plus{background:var(--rose-ink)}
+  .hlv{display:inline-flex;gap:8px;flex:1 1 45%;align-items:center;padding-left:2px}
+  .hl{width:24px;height:24px;border-radius:50%;border:2.5px solid;background:transparent;display:grid;place-items:center;color:#fff;transition:.15s}
+  .hl svg{width:12px;height:12px;stroke-width:3.5;opacity:0}
+  .hl.on svg{opacity:1}
+  .hl1{border-color:#f0a04b} .hl1.on{background:#f0a04b}
+  .hl2{border-color:#4f9be6} .hl2.on{background:#4f9be6}
+  .hl3{border-color:#3fae7a} .hl3.on{background:#3fae7a}
+  .hl:hover{transform:scale(1.1)}
+  /* View tabs */
+  .views{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:5px;margin-bottom:14px}
+  .vtab{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 10px;border-radius:12px;font-weight:800;font-size:14px;color:var(--muted)}
+  .vtab svg{width:16px;height:16px}
+  .vtab.on{background:var(--lilac);color:var(--lilac-ink)}
+  [hidden]{display:none!important}
+
+  /* Weekly report */
+  .wk-rows{padding:8px 16px 14px}
+  .wk-row{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:4px 12px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .wk-row:last-child{border-bottom:none}
+  .wk-name{font-weight:700;font-size:14px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .wk-num{text-align:right;font-weight:800;font-size:13px}
+  .wk-num small{display:block;font-weight:600;color:var(--muted);font-size:11px}
+  .wk-bar{grid-column:1/-1;height:12px;background:var(--bg);border-radius:99px;overflow:hidden}
+  .wk-bar i{display:block;height:100%;border-radius:99px}
+  .wk-extra{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
+  .wk-extra span{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--bg);color:var(--muted)}
+  .wk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:14px 16px 16px;align-items:end}
+  .wk-day{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .wk-col{width:100%;max-width:46px;height:120px;background:var(--bg);border-radius:12px;position:relative;overflow:hidden}
+  .wk-col i{position:absolute;left:0;right:0;bottom:0;border-radius:12px}
+  .wk-col b{position:absolute;left:0;right:0;top:6px;text-align:center;font-size:11.5px;font-weight:800;color:var(--ink);z-index:1}
+  .wk-day .lb{font-size:12px;font-weight:800}
+  .wk-day .lb small{display:block;font-weight:600;color:var(--muted);font-size:11px;text-align:center}
+  .wk-day.today .lb{color:var(--lilac-ink)}
+  .wk-day.future .wk-col{background:repeating-linear-gradient(45deg,#f6f4fb,#f6f4fb 6px,#efecf7 6px,#efecf7 12px)}
+  .wk-day .mt{font-size:10.5px;font-weight:800;color:var(--sky-ink);background:var(--sky);padding:1px 7px;border-radius:99px;min-height:17px}
+  .wk-day .mt.zero{visibility:hidden}
+  .wk-list{padding:4px 16px 14px;margin:0}
+  .wk-list li{display:flex;gap:8px;align-items:center;padding:5px 0;font-size:14px}
+  .wk-list li svg{width:15px;height:15px;color:var(--mint-ink)}
+  .wk-list li.o svg{color:var(--peach-ink)}
+  .wk-list li small{margin-left:auto;color:var(--muted);font-size:11.5px;font-weight:700;white-space:nowrap}
+  .wk-h3{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:12px 16px 0}
+  .card.week .card-h{background:var(--mint)} .card.week .chip{background:#fff;color:var(--mint-ink)}
+  .card.days .card-h{background:var(--butter)} .card.days .chip{background:#fff;color:var(--butter-ink)}
+  .stat .sub{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:1px}
+  span.dur.fixed{font-size:12.5px;font-weight:700;color:var(--muted);background:var(--bg);border:1.5px solid var(--line);border-radius:9px;padding:5px 9px;flex-shrink:0;white-space:nowrap}
+  .row.done span.dur.fixed{color:var(--mint-ink);background:var(--mint);border-color:transparent}
+  .dot.sun{border-color:#f1cdb9;color:var(--peach-ink)}
+  .dot.sun.on{background:var(--peach-ink);border-color:var(--peach-ink);color:#fff}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+  .stat .lab{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .stat .val{font-size:22px;font-weight:800;margin-top:2px}
+  .bar{height:8px;background:var(--bg);border-radius:99px;margin-top:8px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b9a9f5,#8fd6b5);border-radius:99px;transition:width .35s}
+  .stat.out .val{color:var(--peach-ink)}
+  .stat.streak .val{color:var(--mint-ink)}
+
+  /* Cards */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;margin-bottom:14px;overflow:hidden}
+  .card-h{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;gap:10px}
+  .card-h h2{margin:0;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+  .chip{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px}
+  .rec .card-h{background:var(--lilac)} .rec .chip{background:#fff;color:var(--lilac-ink)}
+  .main .card-h{background:var(--sky)} .main .chip{background:#fff;color:var(--sky-ink)}
+  .ghost{font-size:12.5px;font-weight:700;color:var(--muted);padding:5px 10px;border-radius:99px;background:rgba(255,255,255,.7);display:flex;align-items:center;gap:5px}
+  .ghost:hover{color:var(--ink);background:#fff}
+  .ghost svg{width:14px;height:14px}
+
+  /* Rows */
+  ul{list-style:none;margin:0;padding:6px 8px 8px}
+  li.row{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:12px}
+  li.row:hover{background:var(--soft)}
+  .tick{width:24px;height:24px;border-radius:8px;border:2px solid var(--tick-line);display:grid;place-items:center;flex-shrink:0;transition:.15s;color:#fff;background:var(--card)}
+  .tick svg{width:14px;height:14px;stroke-width:3;opacity:0}
+  .row.done .tick{background:var(--mint-ink);border-color:var(--mint-ink)}
+  .row.done .tick svg{opacity:1}
+  .txt{flex:1;min-width:0;word-break:break-word;cursor:text}
+  .main .row.done .txt{color:var(--muted);text-decoration:line-through;text-decoration-color:#c9c3dc}
+  .rec .row.done .txt{color:var(--ink)}
+  .num{font-size:11.5px;font-weight:800;color:var(--lilac-ink);background:var(--lilac);width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex-shrink:0}
+  .pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+  .pill.carry{background:var(--peach);color:var(--peach-ink)}
+  .pill.age{background:var(--rose);color:var(--rose-ink)}
+  .act{display:flex;gap:2px;opacity:.35;transition:.15s}
+  li.row:hover .act,.act:focus-within{opacity:1}
+  .act button{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;color:var(--muted)}
+  .act button:hover{background:var(--bg);color:var(--ink)}
+  .act button svg{width:15px;height:15px}
+  .row.pri .flag{color:var(--butter-ink);opacity:1}
+  .row.pri{background:#fffcf0}
+  .row.pri .act{opacity:1}
+  .row.pri .act .del{opacity:.4}
+  /* Recurring rows */
+  li.rrow{align-items:center}
+  .rbody{flex:1;min-width:0;display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
+  .rbody .txt{flex:0 1 auto;cursor:pointer}
+  .subs{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--tick-line);font-size:11px;font-weight:800;color:var(--muted);display:grid;place-items:center;background:var(--card);transition:.15s}
+  .dot:hover{border-color:var(--lilac-ink)}
+  .dot.on{background:var(--lilac-ink);border-color:var(--lilac-ink);color:#fff}
+  .cnt{font-size:11.5px;font-weight:800;color:var(--lilac-ink);margin-left:2px}
+  .kid{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:3px 10px 3px 4px;border-radius:99px;background:var(--bg);color:var(--muted);transition:.15s}
+  .kid i{width:18px;height:18px;border-radius:50%;border:2px solid var(--tick-line);display:grid;place-items:center;background:var(--card);color:#fff}
+  .kid i svg{width:10px;height:10px;stroke-width:3.5;opacity:0}
+  .kid.on{background:var(--mint);color:var(--mint-ink)}
+  .kid.on i{background:var(--mint-ink);border-color:var(--mint-ink)}
+  .kid.on i svg{opacity:1}
+  .row.part .tick{border-color:var(--lilac-ink);background:var(--lilac)}
+  select.dur{font:inherit;font-size:12.5px;font-weight:700;border:1.5px solid var(--line);border-radius:9px;padding:5px 6px;background:#fff;color:var(--muted);cursor:pointer;flex-shrink:0}
+  select.dur.set{color:var(--sky-ink);border-color:#bcd5f0;background:var(--sky)}
+  .kidedit{display:flex;gap:6px;width:100%;padding-left:32px}
+  .kidedit input{flex:1;min-width:0;font:inherit;font-size:13px;border:1.5px solid #d6d0ea;border-radius:8px;padding:3px 8px;outline:none}
+  .kidedit input:focus{border-color:var(--lilac-ink)}
+  .redit{flex-wrap:wrap}
+  input.edit{flex:1;font:inherit;border:1.5px solid var(--lilac-ink);border-radius:8px;padding:4px 8px;outline:none;min-width:0}
+
+  /* Add */
+  .add{display:flex;gap:8px;padding:12px 16px 4px}
+  .add input{flex:1;font:inherit;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;outline:none;min-width:0}
+  .add input:focus{border-color:#b6a9f0;background:var(--card)}
+  .add button{background:var(--sky-ink);color:#fff;border-radius:12px;padding:0 14px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .tabs{display:flex;gap:6px;padding:10px 16px 0}
+  .tab{font-size:12.5px;font-weight:700;color:var(--muted);padding:5px 11px;border-radius:99px;background:var(--bg)}
+  .tab.on{background:var(--ink);color:#fff}
+  .tab b{font-weight:800;opacity:.7;margin-left:3px}
+  .empty{color:var(--muted);text-align:center;padding:18px 10px 20px;font-size:14px}
+  .sep{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:10px 8px 2px}
+
+  /* Footer */
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12.5px;padding:4px 4px}
+  .foot .btns{display:flex;gap:6px}
+  .foot button{background:var(--card);border:1px solid var(--line);padding:6px 11px;border-radius:99px;font-size:12.5px;font-weight:700;color:var(--muted);display:flex;gap:5px;align-items:center}
+  .foot button:hover{color:var(--ink)}
+  .foot button svg{width:14px;height:14px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:10px}
+  .panel textarea{width:100%;height:110px;font:12px ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:10px;padding:8px;resize:vertical}
+  .panel .r{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+  .panel .r button{padding:6px 12px;border-radius:99px;font-weight:700;font-size:13px;background:var(--bg)}
+  .panel .r .pri{background:var(--lilac-ink);color:#fff}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:8px 14px;border-radius:99px;font-size:13px;opacity:0;transition:.25s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:560px){
+    .stats{grid-template-columns:1fr 1fr 1fr}
+    .stat .val{font-size:18px}
+    li.rrow{flex-wrap:wrap}
+    li.rrow select.dur{margin-left:34px}
+    .stats .stat:first-child{grid-column:1/-1}
+    .act{opacity:1}
+  }
+  @media print{
+    body{background:#fff}
+    .views,.navbtn,.todaybtn,.status,.add,.tabs,.act,.foot,.ghost{display:none!important}
+    .card,.stat,.datebar{break-inside:avoid;border-color:#ddd}
+    @page{size:A4;margin:14mm}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/><path d="M7 12h3l1.5-3 2 6 1.5-3h2"/></svg></div>
+      <div><h1>Qalbun Hayy <span class="ar-title" dir="rtl" lang="ar">قَلْبٌ حَيٌّ</span></h1><small data-t="tagline">A living heart — remembrance for you and your family, every day</small></div>
+    </div>
+    <div class="hright">
+      <div class="status" id="status"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg><span>Loading…</span></div>
+      <div class="theme-wrap">
+        <button class="themebtn" id="themeBtn" title="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+        <div class="theme-menu" id="themeMenu" hidden>
+          <div class="tm-title" data-t="language">Language</div>
+          <div class="tm-seg"><button data-lang="en">English</button><button data-lang="fr">Français</button><button data-lang="mfe">Kreol</button></div>
+          <div class="tm-title" data-t="qfont">Quran font</div>
+          <div class="tm-seg"><button data-qf="indopak">IndoPak</button><button data-qf="hafs">Uthmani Hafs</button></div>
+          <div class="tm-title" data-t="appearance">Appearance</div>
+          <button data-theme-pick="light"><i style="background:linear-gradient(135deg,#ece6fd,#dcf3e8)"></i><span><span data-t="thPastel">Pastel</span><small data-t="thPastelS">soft colours</small></span></button>
+          <button data-theme-pick="dark"><i style="background:linear-gradient(135deg,#1f1c2a,#2f2850)"></i><span><span data-t="thDark">Dark</span><small data-t="thDarkS">easy on the eyes</small></span></button>
+          <button data-theme-pick="bold"><i style="background:linear-gradient(135deg,#5b4bc4,#7a63e0)"></i><span><span data-t="thBold">Bold header</span><small data-t="thBoldS">phone-app style</small></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="views" id="views">
+    <button class="vtab on" data-v="day"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg><span data-t="vDay">Daily checklist</span></button>
+    <button class="vtab" data-v="week"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span data-t="vWeek">Weekly report</span></button>
+  </div>
+
+  <div class="datebar">
+    <button class="navbtn" id="prev" title="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <div class="dateinfo"><div class="d" id="dateLabel"></div><div class="rel" id="dateRel"></div></div>
+    <button class="todaybtn" id="todayBtn" data-t="backToday" hidden>Back to today</button>
+    <label class="navbtn cal" title="Pick a date"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><input type="date" id="datePick"></label>
+    <button class="navbtn" id="next" title="Next"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+  </div>
+
+  <div id="weekView" hidden></div>
+
+  <div id="dayView">
+  <div class="stats">
+    <div class="stat"><div class="lab" data-t="dayProg">Day progress</div><div class="val" id="pVal">0 / 0</div><div class="bar"><i id="pBar"></i></div></div>
+    <div class="stat out"><div class="lab" data-t="outstanding">Outstanding</div><div class="val" id="oVal">0</div></div>
+    <div class="stat time"><div class="lab" data-t="sakT">Sakinah time</div><div class="val" id="tVal">—</div><div class="sub" id="tSub"></div></div>
+    <div class="stat streak"><div class="lab" data-t="sakStreak">Sakinah streak</div><div class="val" id="sVal">0</div></div>
+  </div>
+
+  <!-- Recurring -->
+  <div class="card rec">
+    <div class="card-h">
+      <h2><span class="chip"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span><span data-t="sakTime">My Sakinah Time</span></h2>
+      <button class="ghost" id="editRec"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span>Rename</span></button>
+    </div>
+    <ul id="recList"></ul>
+    <div class="dyk" id="dyk"></div>
+  </div>
+
+  <!-- Main tasks -->
+  <div class="card main">
+    <div class="card-h">
+      <h2><span class="chip"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span data-t="mainTasks">Main tasks</span></h2>
+      <button class="ghost" id="clearDone"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg><span data-t="clearDone">Clear done</span></button>
+    </div>
+    <form class="add" id="addForm">
+      <input id="addInput" data-tp="addPh" placeholder="Add a task and press Enter…" autocomplete="off" maxlength="200">
+      <button type="submit"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span data-t="add">Add</span></button>
+    </form>
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-f="all"><span data-t="fAll">All</span><b id="cAll"></b></button>
+      <button class="tab" data-f="open"><span data-t="fOpen">Outstanding</span><b id="cOpen"></b></button>
+      <button class="tab" data-f="done"><span data-t="fDone">Completed</span><b id="cDone"></b></button>
+    </div>
+    <ul id="taskList"></ul>
+  </div>
+
+  <div class="foot">
+    <span data-t="foot">Unfinished tasks roll over to the next day automatically. Flag a task to pin it to the top.</span>
+    <div class="btns">
+      <button id="copyBk"><svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span data-t="copyBk">Copy backup</span></button>
+      <button id="restoreBk"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span data-t="restore">Restore</span></button>
+    </div>
+  </div>
+  <div class="panel" id="restorePanel" hidden>
+    <div data-t="restoreHelp" style="font-size:13px;color:var(--muted);margin-bottom:6px">Paste a backup you copied earlier, then press Restore. This replaces what is here now.</div>
+    <textarea id="restoreText"></textarea>
+    <div class="r"><button id="restoreCancel" data-t="cancel">Cancel</button><button class="pri" id="restoreGo" data-t="restore">Restore</button></div>
+  </div>
+  </div><!-- /dayView -->
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const KEY = 'everydayChecklist.v1';
+  const ICON = {
+    check:'<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>',
+    flag:'<svg viewBox="0 0 24 24"><path d="M4 22V4"/><path d="M4 4h12l-2 4 2 4H4"/></svg>',
+    del:'<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>',
+    edit:'<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+    cloud:'<svg viewBox="0 0 24 24"><path d="M17.5 19H7a5 5 0 1 1 1-9.9A6 6 0 0 1 19.5 11 4 4 0 0 1 17.5 19z"/><path d="M9.5 14l2 2 3.5-3.5"/></svg>',
+    device:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
+    eye:'<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+    minus:'<svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>',
+    sync:'<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>'
+  };
+
+
+  /* ---------- languages ---------- */
+  const L = {"g1":["Quran for me","Le Coran pour moi","Koran pou mwa"],"g2":["Zikr & Dua","Zikr & Dua","Zikr & Dua"],"g3":["My Family Quran Reading & Hifz","Lecture du Coran & Hifz en famille","Lektir Koran & Hifz mo fami"],"g4":["Sunnah & Nafil Prayers","Prières Sunnah & Nafil","Namaz Sunnah & Nafil"],"duaN":["dua","dua","dua"],"hl1":["Learning","En apprentissage","Pe aprann"],"hl2":["Revising","En révision","Pe reviz"],"hl3":["Memorised","Mémorisé","Finn memoriz"],"settings":["Settings","Réglages","Reglaz"],"language":["Language","Langue","Lang"],"qfont":["Quran font","Police du Coran","Lekritir Koran"],"prevV":["Previous verse","Verset précédent","Verse avan"],"nextV":["Next verse","Verset suivant","Prosin verse"],"showAr":["Show Arabic and meaning","Afficher l’arabe et le sens","Montre arab ek sinifikasion"],"tagline": ["A living heart — remembrance for you and your family, every day", "Un cœur vivant — le rappel d’Allah pour vous et votre famille, chaque jour", "Enn leker vivan — rapel Allah pou twa ek to fami, toulezour"], "saving": ["Saving…", "Enregistrement…", "Pe anrezistre…"], "savedCloud": ["Saved to your account", "Enregistré sur votre compte", "Anrezistre lor to kont"], "savedLocal": ["Saved in this browser", "Enregistré dans ce navigateur", "Anrezistre dan sa navigater-la"], "appearance": ["Appearance", "Apparence", "Laparans"], "thPastel": ["Pastel", "Pastel", "Pastel"], "thPastelS": ["soft colours", "couleurs douces", "kouler dou"], "thDark": ["Dark", "Sombre", "Som"], "thDarkS": ["easy on the eyes", "repose les yeux", "repoz lizie"], "thBold": ["Bold header", "En-tête coloré", "Antet kolore"], "thBoldS": ["phone-app style", "style appli mobile", "stil app telefonn"], "vDay": ["Daily checklist", "Liste du jour", "Lalis zordi"], "vWeek": ["Weekly report", "Bilan de la semaine", "Rapor lasemenn"], "backToday": ["Back to today", "Retour à aujourd’hui", "Retourn zordi"], "dayProg": ["Day progress", "Progression du jour", "Progre zordi"], "outstanding": ["Outstanding", "En attente", "Ankor pou fer"], "sakT": ["Sakinah time", "Temps Sakinah", "Letan Sakinah"], "sakStreak": ["Sakinah streak", "Série Sakinah", "Seri Sakinah"], "sakTime": ["My Sakinah Time", "Mon temps de Sakinah", "Mo Letan Sakinah"], "rename": ["Rename", "Renommer", "Sanz nom"], "done": ["Done", "Terminé", "Fini"], "mainTasks": ["Main tasks", "Tâches principales", "Bann travay prinsipal"], "clearDone": ["Clear done", "Effacer les terminées", "Efas seki fini"], "addPh": ["Add a task and press Enter…", "Ajoutez une tâche puis Entrée…", "Azout enn travay, apiy Enter…"], "add": ["Add", "Ajouter", "Azoute"], "fAll": ["All", "Toutes", "Tou"], "fOpen": ["Outstanding", "En attente", "Pou fer"], "fDone": ["Completed", "Terminées", "Fini"], "foot": ["Unfinished tasks roll over to the next day automatically. Flag a task to pin it to the top.", "Les tâches non terminées passent automatiquement au lendemain. Marquez une tâche pour l’épingler en haut.", "Bann travay ki pa fini pas otomatikman lor landime. Mark enn travay pou met li anler."], "copyBk": ["Copy backup", "Copier la sauvegarde", "Kopi backup"], "restore": ["Restore", "Restaurer", "Restore"], "restoreHelp": ["Paste a backup you copied earlier, then press Restore. This replaces what is here now.", "Collez une sauvegarde copiée auparavant, puis appuyez sur Restaurer. Cela remplace le contenu actuel.", "Kol enn backup ki to ti kopie avan, apre apiy Restore. Sa pou ranplas seki ena la aster."], "cancel": ["Cancel", "Annuler", "Anile"], "ofPlanned": ["of {0} planned", "sur {0} prévu", "lor {0} prevwar"], "day": ["day", "jour", "zour"], "days": ["days", "jours", "zour"], "today": ["Today", "Aujourd’hui", "Zordi"], "yesterday": ["Yesterday", "Hier", "Yer"], "tomorrow": ["Tomorrow", "Demain", "Dime"], "daysAgo": ["{0} days ago", "il y a {0} jours", "{0} zour desela"], "inDays": ["In {0} days", "Dans {0} jours", "Dan {0} zour"], "week": ["Week:", "Semaine :", "Lasemenn:"], "thisWeek": ["This week · {0} of 7 days so far", "Cette semaine · {0} jours sur 7", "Sa lasemenn-la · {0} zour lor 7"], "lastWeek": ["Last week", "La semaine dernière", "Lasemenn dernie"], "weeksAgo": ["{0} weeks ago", "il y a {0} semaines", "{0} lasemenn desela"], "nextWeek": ["Upcoming week", "Semaine à venir", "Lasemenn ki pe vini"], "n0": ["Quran reading & Verse meaning", "Lecture du Coran & sens du verset", "Lektir Koran & sinifikasion verse"], "n1": ["Hifz - Recite portion 5 times a day", "Hifz - Réciter la portion 5 fois par jour", "Hifz - Resit porsion 5 fwa par zour"], "n2": ["Azhkaar + Istighfaar + Darood", "Azhkaar + Istighfaar + Darood", "Azhkaar + Istighfaar + Darood"], "n3": ["Kids Quran revision and Sabaq", "Révision du Coran et Sabaq des enfants", "Revizion Koran ek Sabaq bann zanfan"], "n4": ["Sunnah Prayers", "Prières Sunnah", "Namaz Sunnah"], "n5": ["Nafil Prayers", "Prières Nafil", "Namaz Nafil"], "n6": ["Dua (Supplication)", "Dua (Invocation)", "Dua (Demann Allah)"], "n7": ["Home Task", "Tâche à la maison", "Travay lakaz"], "reading": ["Reading", "Lecture", "Lektir"], "hifz": ["Hifz", "Hifz", "Hifz"], "versesPh": ["Verses e.g. 1–10", "Versets ex. 1–10", "Verse ex. 1–10"], "childPh": ["Child’s name", "Nom de l’enfant", "Nom zanfan"], "addChild": ["Add child", "Ajouter un enfant", "Azout enn zanfan"], "surahPh": ["Surah…", "Sourate…", "Sourat…"], "azPh": ["Choose today’s azhkaar…", "Choisir le zikr du jour…", "Swazir zikr zordi…"], "duPh": ["Choose today’s dua…", "Choisir la dua du jour…", "Swazir dua zordi…"], "rakah": ["rak‘ah", "rak‘ah", "rakaat"], "recit": ["Recitation", "Récitation", "Resitasion"], "dyk": ["Did you know?", "Le saviez-vous ?", "To ti kone?"], "sunnahP": ["Sunnah prayers", "Prières Sunnah", "Namaz Sunnah"], "fromYest": ["from yesterday", "d’hier", "depi yer"], "e1": ["Nothing ticked off yet.", "Rien de coché pour l’instant.", "Nanye pankor koste."], "e2": ["All clear — nothing outstanding.", "Tout est fait — rien en attente.", "Tou korek — nanye pa reste."], "e3": ["No tasks yet. Type one above and press Enter.", "Aucune tâche. Saisissez-en une ci-dessus puis Entrée.", "Pena travay ankor. Tap enn lao, apiy Enter."], "taskDel": ["Task deleted", "Tâche supprimée", "Travay inn efase"], "undo": ["Undo", "Annuler", "Anile"], "noneClear": ["No completed tasks to clear", "Aucune tâche terminée à effacer", "Pena travay fini pou efase"], "cleared": ["{0} completed cleared", "{0} terminée(s) effacée(s)", "{0} travay fini inn efase"], "bkCopied": ["Backup copied — paste it somewhere safe", "Sauvegarde copiée — collez-la en lieu sûr", "Backup inn kopie — kol li dan enn plas sir"], "bkSelect": ["Select all and copy the text below", "Sélectionnez tout et copiez le texte ci-dessous", "Selekte tou, kopi text anba"], "bkRestored": ["Backup restored", "Sauvegarde restaurée", "Backup inn restore"], "bkBad": ["That doesn’t look like a valid backup", "Cette sauvegarde ne semble pas valide", "Sa backup-la pa paret valid"], "removed": ["{0} removed", "{0} retiré", "{0} inn tire"], "child": ["Child", "Enfant", "Zanfan"], "wkComp": ["Sakinah completion", "Sakinah accompli", "Sakinah akonpli"], "perfect": ["Perfect days", "Jours parfaits", "Zour parfe"], "allDone": ["everything done", "tout fait", "tou fini"], "timeSpent": ["Time spent", "Temps passé", "Letan pase"], "mainDone": ["Main tasks done", "Tâches terminées", "Travay fini"], "addedWeek": ["{0} added this week", "{0} ajoutées cette semaine", "{0} azoute sa lasemenn-la"], "dayByDay": ["Day by day", "Jour par jour", "Zour par zour"], "sakFull": ["Sakinah tasks fully done", "Sakinah entièrement fait", "Sakinah fini net"], "compWeek": ["Completed this week", "Terminées cette semaine", "Fini sa lasemenn-la"], "xOfY": ["{0} of {1}", "{0} sur {1}", "{0} lor {1}"], "completed": ["Completed", "Terminées", "Fini"], "stillOut": ["Still outstanding", "Encore en attente", "Ankor pou fer"], "since": ["since", "depuis", "depi"], "noMain": ["No main tasks this week.", "Aucune tâche cette semaine.", "Pena travay sa lasemenn-la."], "notStarted": ["This week hasn’t started yet.", "Cette semaine n’a pas encore commencé.", "Sa lasemenn-la pankor koumanse."], "daysFull": ["days full", "jours complets", "zour konple"], "daysPrayed": ["days prayed", "jours priés", "zour inn fer"], "recits": ["recitations", "récitations", "resitasion"], "task": ["task", "tâche", "travay"], "tasks": ["tasks", "tâches", "travay"], "qLoad": ["Loading Quran text…", "Chargement du texte du Coran…", "Pe sarz text Koran…"], "verses": ["verses", "versets", "verse"], "qNote": ["", "", "Tradiksion Koran an Kreol pankor disponib — pe montre li an franse."], "dailyTask": ["Daily task", "Tâche du jour", "Travay zour"]};
+  const LI = {en:0, fr:1, mfe:2};
+  const LG = () => (typeof state!=='undefined' && state && LI[state.lang]!==undefined) ? state.lang : 'en';
+  const T = (k,...a) => { const e=L[k]; let s = e ? (e[LI[LG()]] ?? e[0]) : k; a.forEach((v,n)=>{ s=s.replace('{'+n+'}',v); }); return s; };
+  const tx = o => o[LG()] || o.en;
+  const MFE = {wd:['Dimans','Lindi','Mardi','Merkredi','Zedi','Vandredi','Samdi'], wds:['Dim','Lin','Mar','Mer','Zed','Van','Sam'],
+               mo:['Zanvie','Fevriye','Mars','Avril','Me','Zin','Zilye','Out','Septam','Oktob','Novam','Desam'], mos:['Zan','Fev','Mar','Avr','Me','Zin','Zil','Out','Sep','Okt','Nov','Des']};
+  function fd(s, kind){
+    const d = fromIso(s);
+    if(LG()==='mfe'){
+      const W=MFE.wd[d.getDay()], w=MFE.wds[d.getDay()], M=MFE.mo[d.getMonth()], m=MFE.mos[d.getMonth()], n=d.getDate();
+      return kind==='long' ? W+' '+n+' '+M+' '+d.getFullYear() : kind==='wdm' ? w+' '+n+' '+m : kind==='dm' ? n+' '+m : kind==='wd' ? w : w+' '+n;
+    }
+    const loc = LG()==='fr' ? 'fr-FR' : 'en-GB';
+    const o = kind==='long' ? {weekday:'long',day:'numeric',month:'long',year:'numeric'} : kind==='wdm' ? {weekday:'short',day:'numeric',month:'short'} : kind==='dm' ? {day:'numeric',month:'short'} : kind==='wd' ? {weekday:'short'} : {weekday:'short',day:'numeric'};
+    let r = d.toLocaleDateString(loc, o);
+    return LG()==='fr' ? r.charAt(0).toUpperCase()+r.slice(1) : r;
+  }
+  const dispName = i => state.recurring[i]===NAMES[i] ? T('n'+i) : state.recurring[i];
+
+  /* ---------- dates ---------- */
+  const iso = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const fromIso = s => { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); };
+  const addDays = (s,n) => { const d=fromIso(s); d.setDate(d.getDate()+n); return iso(d); };
+  const diffDays = (a,b) => Math.round((fromIso(a)-fromIso(b))/86400000);
+  const TODAY = () => iso(new Date());
+  const shortDate = s => fd(s,'wdm');
+
+  /* ---------- state ---------- */
+  const OLD_DEFAULT = ['Check & reply to emails','Prepare today’s lessons','Mark / give feedback','Tutoring prep','Plan tomorrow'];
+  const NAMES = ['Quran reading & Verse meaning','Hifz - Recite portion 5 times a day','Azhkaar + Istighfaar + Darood','Kids Quran revision and Sabaq','Sunnah Prayers','Nafil Prayers','Dua (Supplication)','Home Task'];
+  // dur: [min,max] dropdown in 5-minute steps; def = starting value each day
+  const R = [5,30];
+  const CFG = [
+    {k:'one', dur:R, def:5},
+    {k:'dots', labels:['1','2','3','4','5'], tip:'Recitation', dur:R, def:10},
+    {k:'count', az:true, items:[{l:'Azhkaar',step:10,max:100,sec:3},{l:'Istighfaar',step:10,max:100,sec:1},{l:'Darood',step:1,max:20,sec:25}]},
+    {k:'kids', dur:R, def:15},
+    {k:'dots', labels:['2','4','2','2','2'], tip:'rak‘ah', sunnah:true, dur:R, def:10},
+    // bonus: optional, never counts against progress or the streak. since3: only counts from the day it was added
+    {k:'count', bonus:true, inline:true, items:[{l:'Rak‘ah',step:2,max:2,sec:90}]},
+    {k:'count', inline:true, dua:true, since3:true, items:[{l:'Dua',step:1,max:1,sec:30}]},
+    {k:'one'}
+  ];
+  const N = () => state.recurring.length;
+  function defaults(){
+    return { recurring:NAMES.slice(), cfg:JSON.parse(JSON.stringify(CFG)), rec:{}, dur:{}, tasks:[], updated:0, v:3 };
+  }
+  function parts(i){ const c=state.cfg[i]||{k:'one'}; return c.k==='one'?1:c.k==='count'?c.items.length:c.k==='kids'?(state.kids||[]).length:c.labels.length; }
+const SURAHS=["Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Taha","Al-Anbya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-'Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shuraa","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saf","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","'Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duhaa","Ash-Sharh","At-Tin","Al-'Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-'Adiyat","Al-Qari'ah","At-Takathur","Al-'Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
+  const AZHKAAR = [
+    {t:'SubhanAllah', ar:'سُبْحَانَ اللهِ', en:'Glory be to Allah', fr:"Gloire à Allah", mfe:"Glwar pou Allah"},
+    {t:'Alhamdulillah', ar:'الْحَمْدُ لِلَّهِ', en:'All praise is for Allah', fr:"Toute louange est à Allah", mfe:"Tou louanz pou Allah"},
+    {t:'Allahu Akbar', ar:'اللهُ أَكْبَرُ', en:'Allah is the Greatest', fr:"Allah est le Plus Grand", mfe:"Allah pli Gran"},
+    {t:'La ilaha illallah', ar:'لَا إِلَٰهَ إِلَّا اللهُ', en:'There is no god but Allah', fr:"Il n’y a de divinité qu’Allah", mfe:"Pena okenn divinite apart Allah"},
+    {t:'SubhanAllahi wa bihamdihi', ar:'سُبْحَانَ اللهِ وَبِحَمْدِهِ', en:'Glory be to Allah and praise be to Him', fr:"Gloire et louange à Allah", mfe:"Glwar ek louanz pou Allah"},
+    {t:'SubhanAllahi wa bihamdihi, SubhanAllahil-\u2018Azim', ar:'سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ', en:'Glory be to Allah and praise be to Him; glory be to Allah the Magnificent', fr:"Gloire et louange à Allah ; gloire à Allah le Très Grand", mfe:"Glwar ek louanz pou Allah; glwar pou Allah, Seki Tre Gran"},
+    {t:'La hawla wa la quwwata illa billah', ar:'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ', en:'There is no power and no strength except with Allah', fr:"Il n’y a de force ni de puissance qu’en Allah", mfe:"Pena okenn lafors ni pouvwar apart ar Allah"},
+    {t:'SubhanAllah, walhamdulillah, wa la ilaha illallah, wallahu akbar', ar:'سُبْحَانَ اللهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَٰهَ إِلَّا اللهُ، وَاللهُ أَكْبَرُ', en:'Glory be to Allah, all praise is for Allah, there is no god but Allah, and Allah is the Greatest', fr:"Gloire à Allah, louange à Allah, il n’y a de divinité qu’Allah, et Allah est le Plus Grand", mfe:"Glwar pou Allah, louanz pou Allah, pena divinite apart Allah, ek Allah pli Gran"},
+    {t:'La ilaha illallahu wahdahu la sharika lah\u2026', ar:'لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', en:'There is no god but Allah alone, without partner. His is the dominion and His is the praise, and He has power over all things', fr:"Il n’y a de divinité qu’Allah, Seul, sans associé. À Lui la royauté, à Lui la louange, et Il est capable de toute chose", mfe:"Pena divinite apart Allah, Li tousel, san asosie. Rwayote pou Li, louanz pou Li, ek Li ena pouvwar lor tou kiksoz"},
+    {t:'HasbunAllahu wa ni\u2018mal-wakil', ar:'حَسْبُنَا اللهُ وَنِعْمَ الْوَكِيلُ', en:'Allah is sufficient for us, and He is the best Disposer of affairs', fr:"Allah nous suffit, et quel excellent Garant", mfe:"Allah sifi pou nou, ek Li meyer Protekter"}
+  ];
+  const GROUPS = [
+    {id:'q', t:'g1', items:[0,1], ic:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 7h6"/>'},
+    {id:'z', t:'g2', items:[2,6], ic:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>'},
+    {id:'f', t:'g3', items:[3], ic:'<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.5a5 5 0 0 1 5 5"/>'},
+    {id:'p', t:'g4', items:[4,5], ic:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>'}
+  ];
+  const counts = (i,d) => { const c=state.cfg[i]; return !c.bonus && !(c.since3 && state.d3 && d<state.d3); };
+  const dayFull = d => recDay(d).every((a,i)=>!counts(i,d) || isDone(a));
+  const duGet = d => { const v=(state.du||{})[d]; return (v>=0 && v<DUAS.length) ? v : -1; };
+  function duSet(d,v){ state.du=state.du||{}; state.du[d]=v; }
+  const DUAS = [{"t": "Rabbana atina fid-dunya hasanah", "ar": "رَبَّنَآ ءَاتِنَا فِي ٱلدُّنۡيَا حَسَنَةٗ وَفِي ٱلۡأٓخِرَةِ حَسَنَةٗ وَقِنَا عَذَابَ ٱلنَّارِ", "r": "Quran 2:201", "en": "Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.", "fr": "Notre Seigneur, accorde-nous une belle part ici-bas et une belle part dans l’au-delà, et protège-nous du châtiment du Feu.", "mfe": "Nou Segner, donn nou seki bon dan sa lemonn-la ek seki bon dan lot lemonn, ek protez nou kont pinision Dife.", "ip": "رَبَّنَآ اٰتِنَا فِي الدُّنۡيَا حَسَنَةً وَّفِي الۡاٰخِرَةِ حَسَنَةً وَّقِنَا عَذَابَ النَّارِ", "q": 1}, {"t": "Rabbi zidni ‘ilma", "ar": "رَّبِّ زِدۡنِي عِلۡمٗا", "r": "Quran 20:114", "en": "My Lord, increase me in knowledge.", "fr": "Mon Seigneur, accrois mes connaissances.", "mfe": "Mo Segner, ogmant mo konesans.", "ip": "رَّبِّ زِدۡنِيۡ عِلۡمًا", "q": 1}, {"t": "Rabbana la tuzigh qulubana", "ar": "رَبَّنَا لَا تُزِغۡ قُلُوبَنَا بَعۡدَ إِذۡ هَدَيۡتَنَا وَهَبۡ لَنَا مِن لَّدُنكَ رَحۡمَةًۚ إِنَّكَ أَنتَ ٱلۡوَهَّابُ", "r": "Quran 3:8", "en": "Our Lord, do not let our hearts deviate after You have guided us, and grant us mercy from Yourself. Indeed, You are the Bestower.", "fr": "Notre Seigneur, ne fais pas dévier nos cœurs après nous avoir guidés, et accorde-nous Ta miséricorde. C’est Toi le Grand Donateur.", "mfe": "Nou Segner, pa les nou leker devie apre ki To finn gid nou, ek akord nou To mizerikord. Vremem, To mem Seki Done.", "ip": "رَبَّنَا لَا تُزِغۡ قُلُوۡبَنَا بَعۡدَ اِذۡ هَدَيۡتَنَا وَهَبۡ لَنَا مِنۡ لَّدُنۡكَ رَحۡمَةًۚ اِنَّكَ اَنۡتَ الۡوَهَّابُ", "q": 1}, {"t": "Rabbish-rah li sadri", "ar": "رَبِّ ٱشۡرَحۡ لِي صَدۡرِي وَيَسِّرۡ لِيٓ أَمۡرِي وَٱحۡلُلۡ عُقۡدَةٗ مِّن لِّسَانِي يَفۡقَهُواْ قَوۡلِي", "r": "Quran 20:25–28", "en": "My Lord, expand my chest for me, ease my task for me, and untie the knot from my tongue so that they may understand my speech.", "fr": "Mon Seigneur, ouvre-moi ma poitrine, facilite ma tâche et dénoue le nœud de ma langue, afin qu’ils comprennent mes paroles.", "mfe": "Mo Segner, ouver mo lestoma pou mwa, fasilit mo travay, ek defer ne lor mo lalang pou ki zot konpran mo parol.", "ip": "رَبِّ اشۡرَحۡ لِيۡ صَدۡرِيۡۙ وَيَسِّرۡ لِيۡٓ اَمۡرِيۡۙ وَاحۡلُلۡ عُقۡدَةً مِّنۡ لِّسَانِيۡۙ يَفۡقَهُوۡا قَوۡلِيۡ", "q": 1}, {"t": "Rabbana hab lana min azwajina", "ar": "رَبَّنَا هَبۡ لَنَا مِنۡ أَزۡوَٰجِنَا وَذُرِّيَّـٰتِنَا قُرَّةَ أَعۡيُنٖ وَٱجۡعَلۡنَا لِلۡمُتَّقِينَ إِمَامًا", "r": "Quran 25:74", "en": "Our Lord, grant us from our spouses and offspring comfort to our eyes, and make us leaders of the righteous.", "fr": "Notre Seigneur, fais de nos épouses et de nos descendants la joie de nos yeux, et fais de nous des guides pour les pieux.", "mfe": "Nou Segner, fer nou konzwin ek nou zanfan vinn lazwa nou lizie, ek fer nou vinn gid pou bann dimounn pie.", "ip": "رَبَّنَا هَبۡ لَنَا مِنۡ اَزۡوَاجِنَا وَذُرِّيّٰتِنَا قُرَّةَ اَعۡيُنٍ وَّاجۡعَلۡنَا لِلۡمُتَّقِيۡنَ اِمَامًا", "q": 1}, {"t": "Rabbir-hamhuma kama rabbayani saghira", "ar": "رَّبِّ ٱرۡحَمۡهُمَا كَمَا رَبَّيَانِي صَغِيرٗا", "r": "Quran 17:24", "en": "My Lord, have mercy on them both, as they raised me when I was small.", "fr": "Mon Seigneur, fais-leur miséricorde à tous deux, comme ils m’ont élevé tout petit.", "mfe": "Mo Segner, ena pitie pou zot toule de, kouma zot ti elev mwa kan mo ti tipti.", "ip": "رَّبِّ ارۡحَمۡهُمَا كَمَا رَبَّيٰنِيۡ صَغِيۡرًاؕ", "q": 1}, {"t": "Rabbana taqabbal minna", "ar": "رَبَّنَا تَقَبَّلۡ مِنَّآۖ إِنَّكَ أَنتَ ٱلسَّمِيعُ ٱلۡعَلِيمُ", "r": "Quran 2:127", "en": "Our Lord, accept this from us. Indeed, You are the All-Hearing, the All-Knowing.", "fr": "Notre Seigneur, accepte ceci de notre part. C’est Toi l’Audient, l’Omniscient.", "mfe": "Nou Segner, aksepte sa depi nou. Vremem, To mem Seki Tann tou, Seki Kone tou.", "ip": "رَبَّنَا تَقَبَّلۡ مِنَّاؕ اِنَّكَ اَنۡتَ السَّمِيۡعُ الۡعَلِيۡمُ", "q": 1}, {"t": "La ilaha illa anta subhanaka", "ar": "لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبۡحَٰنَكَ إِنِّي كُنتُ مِنَ ٱلظَّـٰلِمِينَ", "r": "Quran 21:87", "en": "There is no god but You; glory be to You. Indeed, I have been among the wrongdoers.", "fr": "Il n’y a de divinité que Toi ; gloire à Toi. J’ai été vraiment du nombre des injustes.", "mfe": "Pena okenn divinite apart Twa; glwar pou Twa. Vremem, mo ti parmi bann ki fer inzistis.", "ip": "لَّآ اِلٰهَ اِلَّآ اَنۡتَ سُبۡحٰنَكَۖ اِنِّيۡ كُنۡتُ مِنَ الظّٰلِمِيۡنَۚۖ", "q": 1}, {"t": "Rabbanagh-fir li wa liwalidayya", "ar": "رَبَّنَا ٱغۡفِرۡ لِي وَلِوَٰلِدَيَّ وَلِلۡمُؤۡمِنِينَ يَوۡمَ يَقُومُ ٱلۡحِسَابُ", "r": "Quran 14:41", "en": "Our Lord, forgive me, my parents and the believers on the Day the account is established.", "fr": "Notre Seigneur, pardonne-moi, ainsi qu’à mes parents et aux croyants, le jour où se dressera le compte.", "mfe": "Nou Segner, pardonn mwa, mo paran ek bann krwayan, zour ki kont pou fer.", "ip": "رَبَّنَا اغۡفِرۡ لِيۡ وَلِوَالِدَيَّ وَلِلۡمُؤۡمِنِيۡنَ يَوۡمَ يَقُوۡمُ الۡحِسَابُ", "q": 1}, {"t": "Allahumma a‘inni ‘ala dhikrika", "ar": "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ", "r": "Sunan Abi Dawud 1522", "en": "O Allah, help me to remember You, to thank You, and to worship You well.", "fr": "Ô Allah, aide-moi à T’évoquer, à Te remercier et à T’adorer de la meilleure façon.", "mfe": "O Allah, ed mwa pou rapel Twa, pou remersie Twa ek pou ador Twa bien."}];
+  const DYK = [
+    {h:'Hifz', en:'The best of you are those who learn the Quran and teach it.', fr:"Les meilleurs d’entre vous sont ceux qui apprennent le Coran et l’enseignent.", mfe:"Bann meyer parmi zot se seki aprann Koran ek ansegn li.", r:'Sahih al-Bukhari 5027'},
+    {h:'Hifz', en:'Your rank in Paradise will be at the last verse you know: “Recite and ascend.”', fr:"Votre rang au Paradis sera au dernier verset que vous connaissez : « Récite et élève-toi. »", mfe:"To ran dan Paradi pou lor dernie verse ki to kone: « Resite ek monte. »", r:'Jami‘ at-Tirmidhi 2914'},
+    {h:'Azhkaar', en:'In the remembrance of Allah do hearts find rest.', fr:"C’est par le rappel d’Allah que les cœurs s’apaisent.", mfe:"Se dan rapel Allah ki leker trouv trankilite.", r:'Quran 13:28'},
+    {h:'Azhkaar', en:'The one who remembers his Lord and the one who does not are like the living and the dead.', fr:"Celui qui se rappelle son Seigneur et celui qui ne le fait pas sont comme le vivant et le mort.", mfe:"Seki rapel so Segner ek seki pa rapel Li, zot kouma enn vivan ek enn mor.", r:'Sahih al-Bukhari 6407'},
+    {h:'Istighfaar', en:'Seek forgiveness and He sends rain, wealth, children and gardens.', fr:"Demandez pardon, et Il envoie la pluie, les biens, les enfants et des jardins.", mfe:"Demann pardon, ek Li avoy lapli, dibien, zanfan ek zardin.", r:'Quran 71:10–12'},
+    {h:'Istighfaar', en:'Allah would not punish them while they seek forgiveness.', fr:"Allah ne les châtierait pas tant qu’ils demandent pardon.", mfe:"Allah pa ti pou pini zot tan ki zot pe demann pardon.", r:'Quran 8:33'},
+    {h:'Darood', en:'Allah and His angels send blessings on the Prophet ﷺ — O believers, send blessings on him too.', fr:"Allah et Ses anges prient sur le Prophète ﷺ — ô croyants, priez sur lui aussi.", mfe:"Allah ek So bann anz avoy benediksion lor Profet ﷺ — o bann krwayan, avoy benediksion lor li ousi.", r:'Quran 33:56'},
+    {h:'Darood', en:'Whoever sends one blessing on me, Allah sends ten blessings on him.', fr:"Quiconque prie sur moi une fois, Allah prie sur lui dix fois.", mfe:"Seki avoy enn benediksion lor mwa, Allah avoy dis benediksion lor li.", r:'Sahih Muslim 408'},
+    {h:'Sunnah prayers', hk:'sunnahP', en:'Twelve rak‘ah a day, and a house is built for you in Paradise.', fr:"Douze rak‘ah par jour, et une maison vous est bâtie au Paradis.", mfe:"Douz rakaat par zour, ek enn lakaz konstrir pou twa dan Paradi.", r:'Sahih Muslim 728'},
+    {h:'Sunnah prayers', hk:'sunnahP', en:'Voluntary prayers complete whatever is lacking in the obligatory ones.', fr:"Les prières surérogatoires complètent ce qui manque aux prières obligatoires.", mfe:"Bann namaz nafil konplet seki manke dan bann namaz farz.", r:'Jami‘ at-Tirmidhi 413'}
+  ];
+  let dykOffset = 0;
+  const DAROOD = {
+    ar:'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ. اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ',
+    en:'O Allah, send Your blessings upon Muhammad and upon the family of Muhammad, as You sent blessings upon Ibrahim and upon the family of Ibrahim; You are indeed Praiseworthy, Most Glorious. O Allah, bestow Your favour upon Muhammad and upon the family of Muhammad, as You bestowed favour upon Ibrahim and upon the family of Ibrahim; You are indeed Praiseworthy, Most Glorious.',
+    fr:"Ô Allah, prie sur Muhammad et sur la famille de Muhammad, comme Tu as prié sur Ibrahim et sur la famille d’Ibrahim ; Tu es certes Digne de louange, Glorieux. Ô Allah, bénis Muhammad et la famille de Muhammad, comme Tu as béni Ibrahim et la famille d’Ibrahim ; Tu es certes Digne de louange, Glorieux.",
+    mfe:"O Allah, avoy To benediksion lor Muhammad ek lor fami Muhammad, kouma To ti avoy benediksion lor Ibrahim ek lor fami Ibrahim; vremem To Dign louanz, Ranpli ar Glwar. O Allah, beni Muhammad ek fami Muhammad, kouma To ti beni Ibrahim ek fami Ibrahim; vremem To Dign louanz, Ranpli ar Glwar.",
+    src:'Darood Ibrahim — Sahih al-Bukhari 3370'
+  };
+  const EYE = ICON.eye;
+  let drPinned = false, azPinned = false, duPinned = false;
+  const QF = () => state.qfont==='hafs' ? 'hafs' : 'indopak';
+  let ipLoading = false;
+  function loadIp(){
+    if(window.QURAN_IP || ipLoading) return; ipLoading = true;
+    const sc = document.createElement('script'); sc.src = 'quran-indopak.js';
+    sc.onload = ()=>{ if(view==='day') render(); }; sc.onerror = ()=>{ ipLoading = false; };
+    document.head.appendChild(sc);
+  }
+  // Arabic of a verse in the chosen Quran font: [text, css class]
+  function qArabic(sn,x){
+    if(QF()==='indopak'){ if(window.QURAN_IP) return [QURAN_IP[sn-1][x-1],'qf-indopak']; loadIp(); return [QURAN[sn-1].ar[x-1],'']; }
+    return [QURAN[sn-1].ar[x-1],'qf-hafs'];
+  }
+  const duaArabic = d => !d.q ? [d.ar,''] : QF()==='indopak' ? [d.ip,'qf-indopak'] : [d.ar,'qf-hafs'];
+  function qStep(dir){
+    const Q = window.QURAN; if(!Q) return; let {s:sn,v} = qrGet(cur);
+    v = Math.min(Math.max(1,v), Q[sn-1].ar.length) + dir;
+    if(v<1){ if(sn>1){ sn--; v=Q[sn-1].ar.length; } else v=1; }
+    else if(v>Q[sn-1].ar.length){ if(sn<114){ sn++; v=1; } else v=Q[sn-1].ar.length; }
+    qrSet(cur,sn,v);
+  }
+  const azGet = d => { const v=(state.az||{})[d]; return (v>=0 && v<AZHKAAR.length) ? v : -1; };
+  function azSet(d,v){ state.az=state.az||{}; state.az[d]=v; }
+  // targets are adjustable any time and apply from then on
+  const tgt = (i,j) => { const v=((state.tgt||{})[i]||[])[j]; return (v>0) ? v : state.cfg[i].items[j].max; };
+  function setTgt(i,j,v){ state.tgt=state.tgt||{}; state.tgt[i]=state.tgt[i]||[]; state.tgt[i][j]=Math.max(1,Math.min(99999,Math.round(+v||0))); }
+  const secsOf = (i,d) => state.cfg[i].items.reduce((s,it,j)=>s+cntDay(d,i)[j]*it.sec, 0);
+  const secsPlan = i => state.cfg[i].items.reduce((s,it,j)=>s+tgt(i,j)*it.sec, 0);
+  function fmtSec(sec){ sec=Math.round(sec); if(!sec) return '0 s'; const m=Math.floor(sec/60), r=sec%60; return m ? (m+' min'+(r?' '+r+' s':'')) : r+' s'; }
+  const KIDS_DEFAULT = ['Muhammad','Suleymaan','Aadam'];
+  const newId = () => 'k'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  // counters (Azhkaar / Istighfaar / Darood)
+  function cntDay(d,i){ const c=state.cfg[i]; const a=((state.cnt||{})[d]||{})[i]||[]; return c.items.map((_,j)=>+a[j]||0); }
+  function setCnt(d,i,arr){
+    state.cnt = state.cnt||{}; state.cnt[d] = state.cnt[d]||{}; state.cnt[d][i] = arr;
+    const r = recDay(d); r[i] = arr.map((v,j)=>v>=tgt(i,j)); state.rec[d] = r;
+  }
+  // kids: done flags and Reading / Hifz notes, keyed by child id so names can change freely
+  const kidDone = (d,id) => !!(((state.kd||{})[d]||{})[id]);
+  function setKid(d,id,v){ state.kd=state.kd||{}; state.kd[d]=state.kd[d]||{}; state.kd[d][id]=!!v; }
+  const noteGet = (d,id,k) => ((((state.kn||{})[d]||{})[id])||[])[k] || {s:0,v:''};
+  function noteSet(d,id,k,field,val){ state.kn=state.kn||{}; const n=state.kn; n[d]=n[d]||{}; n[d][id]=n[d][id]||[{s:0,v:''},{s:0,v:''}]; n[d][id][k]=Object.assign({s:0,v:''}, n[d][id][k]); n[d][id][k][field]=val; }
+  const surahOpts = sel => `<option value="0">${T('surahPh')}</option>` + SURAHS.map((n,i)=>`<option value="${i+1}" ${i+1===sel?'selected':''}>${i+1}. ${n}</option>`).join('');
+  // Quran reading position (surah, verse) per day
+  function qrGet(d){
+    const q = (state.qr||{})[d]; if(q && q.s) return q;
+    const days = Object.keys(state.qr||{}).filter(x=>x<d).sort(); // continue from the most recent earlier day
+    return days.length ? state.qr[days[days.length-1]] : {s:1,v:1};
+  }
+  function qrSet(d,s,v){ state.qr=state.qr||{}; state.qr[d]={s:+s,v:+v}; }
+  function minsOf(i, d){
+    const c = state.cfg[i]; if(!c) return 0;
+    if(c.k==='count') return secsOf(i,d)/60;
+    if(c.dur===undefined) return 0;
+    if(typeof c.dur==='number') return c.dur;
+    const v = (state.dur[d]||[])[i];
+    return (v>=c.dur[0] && v<=c.dur[1]) ? v : (c.def || c.dur[0]);
+  }
+  function migrate(){
+    const base = JSON.parse(JSON.stringify(CFG));
+    const oldKids = Array.isArray(state.cfg) && state.cfg[3] && state.cfg[3].k==='kids' && Array.isArray(state.cfg[3].labels) ? state.cfg[3].labels : null;
+    state.cfg = base;
+    if(!Array.isArray(state.kids)){
+      state.kids = (oldKids||KIDS_DEFAULT).map((n,j)=>({id:'k'+(j+1), name:String(n)}));
+      // carry old per-position ticks and portion notes over to the new ids
+      state.kd = state.kd||{}; state.kn = state.kn||{};
+      Object.keys(state.rec||{}).forEach(d=>{ const a=(state.rec[d]||[])[3]; if(Array.isArray(a)){ state.kd[d]=state.kd[d]||{}; a.forEach((v,j)=>{ if(state.kids[j]) state.kd[d][state.kids[j].id]=!!v; }); } });
+      Object.keys(state.notes||{}).forEach(d=>{ const o=(state.notes[d]||{})[3]; if(o){ state.kn[d]=state.kn[d]||{}; Object.keys(o).forEach(j=>{ if(state.kids[+j]) state.kn[d][state.kids[+j].id]=o[j]; }); } });
+      delete state.notes;
+    }
+    if(!state.kids.length) state.kids = [{id:newId(), name:''}];
+    // v2: Home Task moved from position 4 to 5 (after Sunnah Prayers)
+    if(!(state.v>=2)){
+      const sw = a => { if(Array.isArray(a) && a.length>5){ const t=a[4]; a[4]=a[5]; a[5]=t; } };
+      sw(state.recurring); Object.values(state.rec||{}).forEach(sw); Object.values(state.dur||{}).forEach(sw);
+      state.v = 2;
+    }
+    // v3: Nafil Prayers and Dua inserted after Sunnah Prayers (positions 5 and 6)
+    if(!(state.v>=3)){
+      if(state.recurring.length<8){
+        state.recurring.splice(5,0,NAMES[5],NAMES[6]);
+        Object.values(state.rec||{}).forEach(a=>{ if(Array.isArray(a) && a.length>5) a.splice(5,0,[false],[false]); });
+        Object.values(state.dur||{}).forEach(a=>{ if(Array.isArray(a) && a.length>5) a.splice(5,0,null,null); });
+        state.d3 = TODAY();
+      }
+      state.v = 3;
+    }
+    // notes: plain strings -> {s:surah, v:verses}
+    Object.values(state.kn||{}).forEach(day=>Object.keys(day).forEach(id=>{ day[id]=(day[id]||[]).map(x=>typeof x==='string'?{s:0,v:x}:(x||{s:0,v:''})); }));
+    while(state.recurring.length < NAMES.length) state.recurring.push(NAMES[state.recurring.length]);
+    state.recurring = state.recurring.map(n=>/^azhkaar\s*&\s*istighfaar$/i.test(String(n).trim()) ? NAMES[2] : n);
+    if(!state.dur || typeof state.dur!=='object') state.dur = {};
+    if(state.recurring.join('|')===OLD_DEFAULT.join('|')) state.recurring = NAMES.slice();
+    state.recurring = state.recurring.map(n=>String(n).replace(/\s*\(add 5 check dots here\)\s*/i,'').trim());
+    Object.keys(state.rec).forEach(d=>{
+      const r = state.rec[d];
+      if(Array.isArray(r)) state.rec[d] = r.map((v,i)=>Array.isArray(v)?v:Array(parts(i)).fill(!!v));
+    });
+  }
+  function readLocal(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+  function writeLocal(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); return true; }catch(e){ return false; } }
+  function valid(s){ return s && Array.isArray(s.recurring) && Array.isArray(s.tasks) && typeof s.rec==='object'; }
+
+  let state = readLocal();
+  if(!valid(state)) state = defaults();
+  migrate();
+  let cur = TODAY();
+  if(state.theme) document.documentElement.setAttribute('data-theme', state.theme);
+  document.documentElement.lang = LG()==='en'?'en':'fr';
+  let filter = 'all';
+  let editingRec = false;
+
+  function prune(){
+    const t = TODAY();
+    Object.keys(state.rec).forEach(k=>{ if(diffDays(t,k)>120) delete state.rec[k]; });
+    ['dur','cnt','kn','kd','qr','az','du'].forEach(f=>Object.keys(state[f]||{}).forEach(k=>{ if(diffDays(t,k)>120) delete state[f][k]; }));
+    state.tasks = state.tasks.filter(x=>!(x.done && x.doneDate && diffDays(t,x.doneDate)>90));
+  }
+  prune();
+
+  /* ---------- saving ---------- */
+  let statusKind = 'local';
+  let cloud = null, writing = false, again = false, timer = null, mode = 'local';
+  function setStatus(kind){
+    const el = document.getElementById('status');
+    statusKind = kind;
+    if(kind==='saving'){ el.className='status'; el.innerHTML=ICON.sync+'<span>'+T('saving')+'</span>'; return; }
+    if(kind==='cloud'){ mode='cloud'; el.className='status ok'; el.innerHTML=ICON.cloud+'<span>'+T('savedCloud')+'</span>'; return; }
+    mode='local'; el.className='status ok'; el.innerHTML=ICON.device+'<span>'+T('savedLocal')+'</span>';
+  }
+  function save(){
+    state.updated = Date.now();
+    writeLocal();
+    if(cloud){ setStatus('saving'); clearTimeout(timer); timer=setTimeout(push,700); }
+    else setStatus('local');
+  }
+  async function push(){
+    if(!cloud) return;
+    if(writing){ again=true; return; }
+    writing=true;
+    try{
+      await cloud.set({json:JSON.stringify(state), updated:state.updated});
+      setStatus('cloud');
+    }catch(e){
+      if(e && (e.code==='invalid_argument'||e.code==='revoked'||e.code==='not_granted'||e.code==='capability_disabled')){ cloud=null; setStatus('local'); }
+      else { setTimeout(push, 1500+Math.random()*1000); }
+    }
+    writing=false;
+    if(again){ again=false; push(); }
+  }
+  (async function connect(){
+    setStatus('local');
+    try{
+      const c = window.claude;
+      if(!c || typeof c.use!=='function') return;
+      const [db,user] = await Promise.all([c.use('db'), c.use('user')]);
+      if(!db || !user) return;
+      const id = await user.id();
+      if(!id) return;
+      const ref = db.doc('data/users/'+id+'/checklist');
+      const snap = await Promise.race([ref.get(), new Promise((_,rej)=>setTimeout(()=>rej({code:'timeout'}),10000))]);
+      cloud = ref;
+      if(snap.exists){
+        let remote=null; try{ remote = JSON.parse(snap.data().json); }catch(e){}
+        if(valid(remote) && (remote.updated||0) >= (state.updated||0)){
+          state = remote; migrate(); prune(); writeLocal(); render(); setStatus('cloud');
+        } else if(state.updated){ push(); } else setStatus('cloud');
+      } else if(state.updated){ push(); } else setStatus('cloud');
+    }catch(e){ cloud=null; setStatus('local'); }
+  })();
+
+  /* ---------- helpers ---------- */
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1800); }
+  function recDay(d){
+    const r = state.rec[d] || [];
+    return state.recurring.map((_,i)=>{
+      if(state.cfg[i].k==='kids') return state.kids.map(k=>kidDone(d,k.id));
+      const p = parts(i), a = Array.isArray(r[i]) ? r[i].slice(0,p) : [];
+      while(a.length<p) a.push(false);
+      return a;
+    });
+  }
+  const isDone = a => a.every(Boolean);
+  const durDay = d => (state.dur[d] || []).slice();
+  function fmtMins(m){ m=Math.round(m); if(!m) return '—'; const h=Math.floor(m/60), r=m%60; return h ? (h+'h'+(r?' '+r+'m':'')) : m+' min'; }
+
+  // which main tasks belong to a given day
+  function tasksFor(d){
+    return state.tasks.filter(t=>{
+      if(t.created > d) return false;
+      if(t.done && t.doneDate < d) return false;
+      return true;
+    }).map(t=>({t, doneHere: t.done && t.doneDate===d }));
+  }
+  function streak(){
+    let n=0, d=TODAY();
+    if(!dayFull(d)) d=addDays(d,-1);
+    while(dayFull(d) && n<1000){ n++; d=addDays(d,-1); }
+    return n;
+  }
+
+  /* ---------- render ---------- */
+  /* ---------- weekly report ---------- */
+  const weekStart = d => addDays(d, -((fromIso(d).getDay()+6)%7));
+  const pct = (a,b) => b ? Math.round(a/b*100) : 0;
+  const barCol = p => p>=80 ? 'linear-gradient(90deg,#9edfc0,#4fb88a)' : p>=50 ? 'linear-gradient(90deg,#c7bbf7,#9b8ae6)' : p>0 ? 'linear-gradient(90deg,#fbd2bd,#ef9f7a)' : 'transparent';
+  const bar = p => `<div class="wk-bar"><i style="width:${p}%;background:${barCol(p)}"></i></div>`;
+  function renderWeek(){
+    const t = TODAY(), ws = weekStart(cur), we = addDays(ws,6);
+    const days = [...Array(7)].map((_,k)=>addDays(ws,k));
+    const past = days.filter(d=>d<=t), nP = past.length;
+    $('dateLabel').textContent = T('week') + ' ' + fd(ws,'wdm') + ' – ' + fd(we,'wdm') + ' ' + fromIso(we).getFullYear();
+    const wd = Math.round(diffDays(ws, weekStart(t))/7);
+    $('dateRel').textContent = wd===0 ? T('thisWeek',nP) : wd===-1 ? T('lastWeek') : wd<0 ? T('weeksAgo',-wd) : T('nextWeek');
+    $('todayBtn').hidden = wd===0;
+
+    // every-day tasks
+    let cellsDone=0, cellsTot=0, fullDays=0, mins=0, planned=0;
+    past.forEach(d=>{ if(dayFull(d)) fullDays++; });
+    const taskRows = state.recurring.map((name,i)=>{
+      const c = state.cfg[i], isC = c.k==='count';
+      const pastI = past.filter(d=>c.bonus || counts(i,d)), nPi = pastI.length;
+      let dDone=0, pDone=0, pTot=0, m=0; const per = (c.k==='kids' ? state.kids : (c.labels||[])).map(()=>0);
+      pastI.forEach(d=>{ const a=recDay(d)[i]; if(isDone(a)){ dDone++; if(!isC) m+=minsOf(i,d); } if(isC){ m+=secsOf(i,d)/60; if(!c.bonus) planned+=secsPlan(i)/60; } else planned+=minsOf(i,d); a.forEach((v,j)=>{ if(v){ pDone++; if(j<per.length) per[j]++; } }); pTot+=a.length; });
+      if(!c.bonus){ cellsDone+=dDone; cellsTot+=nPi; } mins+=m;
+      let p = c.k==='one' ? pct(dDone,nPi) : pct(pDone,pTot);
+      let extra = '';
+      if(isC){
+        const sums = c.items.map(()=>0);
+        pastI.forEach(d=>cntDay(d,i).forEach((v,j)=>sums[j]+=v));
+        if(c.inline){ p = pct(dDone,nPi); extra = `<span>${sums[0]} ${T(c.bonus?'rakah':'duaN')}</span>`; }
+        else {
+          p = nPi ? Math.round(c.items.reduce((s,it,j)=>s + Math.min(1, sums[j]/(tgt(i,j)*nPi)), 0) / c.items.length * 100) : 0;
+          extra = c.items.map((it,j)=>`<span>${it.l} ${sums[j]} / ${tgt(i,j)*nPi}</span>`).join('');
+          if(c.az){ const azDays = {}; pastI.forEach(d=>{ const k=azGet(d); if(k>=0) azDays[k]=(azDays[k]||0)+1; });
+            extra += Object.keys(azDays).map(k=>`<span title="${esc(tx(AZHKAAR[k]))}">${esc(AZHKAAR[k].t)} \u00d7 ${azDays[k]} ${T(azDays[k]>1?'days':'day')}</span>`).join(''); }
+        }
+      }
+      if(c.k==='kids') extra = state.kids.map((k,j)=>`<span>${esc(k.name||T('child')+' '+(j+1))} ${per[j]}/${nPi}</span>`).join('');
+      else if(c.k==='dots' && c.sunnah) extra = c.labels.map((l,j)=>`<span>${esc(l)} ${T('rakah')} · ${per[j]}/${nPi}</span>`).join('');
+      else if(c.k==='dots') extra = `<span>${pDone} / ${pTot} ${T('recits')}</span>`;
+      if(c.dua){ const dd = {}; pastI.forEach(d=>{ const k=duGet(d); if(k>=0) dd[k]=(dd[k]||0)+1; });
+        extra += Object.keys(dd).map(k=>`<span title="${esc(tx(DUAS[k]))}">${esc(DUAS[k].t)} \u00d7 ${dd[k]}</span>`).join(''); }
+      extra += m ? `<span>${fmtMins(m)}</span>` : '';
+      return `<div class="wk-row"><div class="wk-name" title="${esc(dispName(i))}">${esc(dispName(i))}</div>
+        <div class="wk-num">${p}%<small>${dDone}/${nPi} ${T(c.bonus?'daysPrayed':'daysFull')}</small></div>${bar(p)}
+        ${extra?`<div class="wk-extra">${extra}</div>`:''}</div>`;
+    }).join('');
+
+    // day columns
+    const cols = days.map(d=>{
+      const fut = d>t, r=recDay(d); let n=0, tot=0; r.forEach((a,i)=>{ if(counts(i,d)){ tot++; if(isDone(a)) n++; } });
+      const p=pct(n,tot);
+      const mt = state.tasks.filter(x=>x.done && x.doneDate===d).length;
+      const lbl = fd(d,'wd');
+      return `<div class="wk-day ${d===t?'today':''} ${fut?'future':''}">
+        <div class="wk-col">${fut?'':`<b>${n}/${tot}</b><i style="height:${p}%;background:${barCol(p).replace('90deg','0deg')}"></i>`}</div>
+        <div class="mt ${mt?'':'zero'}">+${mt} ${T(mt===1?'task':'tasks')}</div>
+        <div class="lb">${lbl}<small>${fromIso(d).getDate()}</small></div></div>`;
+    }).join('');
+
+    // main tasks
+    const doneW = state.tasks.filter(x=>x.done && x.doneDate>=ws && x.doneDate<=we).sort((a,b)=>a.doneDate.localeCompare(b.doneDate));
+    const lastDay = we<t ? we : t;
+    const openW = state.tasks.filter(x=>x.created<=lastDay && (!x.done || x.doneDate>lastDay));
+    const addedW = state.tasks.filter(x=>x.created>=ws && x.created<=we).length;
+    const mainTot = doneW.length + openW.length;
+    const ck = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>', cl = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>';
+    const short = d => fd(d,'wdd');
+
+    const overall = pct(cellsDone, cellsTot);
+    $('weekView').innerHTML = !nP ? `<div class="card"><div class="empty" style="padding:30px">${T('notStarted')}</div></div>` : `
+      <div class="stats">
+        <div class="stat"><div class="lab">${T('wkComp')}</div><div class="val">${overall}%</div><div class="bar"><i style="width:${overall}%"></i></div></div>
+        <div class="stat streak"><div class="lab">${T('perfect')}</div><div class="val">${fullDays}<span style="font-size:14px;color:var(--muted)"> / ${nP}</span></div><div class="sub">${T('allDone')}</div></div>
+        <div class="stat time"><div class="lab">${T('timeSpent')}</div><div class="val">${mins?fmtMins(mins):'0 min'}</div><div class="sub">${T('ofPlanned',fmtMins(planned))}</div></div>
+        <div class="stat out"><div class="lab">${T('mainDone')}</div><div class="val" style="color:var(--mint-ink)">${doneW.length}<span style="font-size:14px;color:var(--muted)"> / ${mainTot}</span></div><div class="sub">${T('addedWeek',addedW)}</div></div>
+      </div>
+      <div class="card days"><div class="card-h"><h2><span class="chip"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>${T('dayByDay')}</h2><span class="ghost" style="background:rgba(255,255,255,.7)">${T('sakFull')}</span></div>
+        <div class="wk-days">${cols}</div></div>
+      <div class="card week"><div class="card-h"><h2><span class="chip"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span>${T('sakTime')}</h2></div>
+        <div class="wk-rows">${taskRows}</div></div>
+      <div class="card main"><div class="card-h"><h2><span class="chip"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>${T('mainTasks')}</h2></div>
+        <div class="wk-rows" style="padding-bottom:4px"><div class="wk-row"><div class="wk-name">${T('compWeek')}</div><div class="wk-num">${pct(doneW.length,mainTot)}%<small>${T('xOfY',doneW.length,mainTot)}</small></div>${bar(pct(doneW.length,mainTot))}</div></div>
+        ${doneW.length?`<div class="wk-h3">${T('completed')}</div><ul class="wk-list">${doneW.map(x=>`<li>${ck}${esc(x.text)}<small>${short(x.doneDate)}</small></li>`).join('')}</ul>`:''}
+        ${openW.length?`<div class="wk-h3">${T('stillOut')}</div><ul class="wk-list">${openW.map(x=>`<li class="o">${cl}${esc(x.text)}<small>${T('since')} ${short(x.created)}</small></li>`).join('')}</ul>`:''}
+        ${!mainTot?`<div class="empty">${T('noMain')}</div>`:''}
+      </div>`;
+  }
+
+  /* ---------- Quran verse panel ---------- */
+  let qPinned = false;
+  function versePanel(q){
+    const Q = window.QURAN; if(!Q) return `<div class="qload">${T('qLoad')}</div>`;
+    const F = LG()!=='en' ? window.QURAN_FR : null; if(LG()!=='en' && !F) loadFr();
+    const su = Q[q.s-1]; if(!su) return '';
+    const v = Math.min(Math.max(1,q.v), su.ar.length);
+    const rows = [v-1, v, v+1].filter(x=>x>=1 && x<=su.ar.length).map(x=>`
+      <div class="vrow ${x===v?'cur':''}">
+        <div class="vn">${su.n}:${x}</div>
+        <div class="var ${qArabic(q.s,x)[1]}" dir="rtl" lang="ar">${esc(qArabic(q.s,x)[0])}</div>
+        <div class="ven">${esc(F ? F[q.s-1].t[x-1] : su.t[x-1])}</div>
+      </div>`).join('');
+    const chev = d => `<svg viewBox="0 0 24 24"><path d="${d<0?'M15 18l-6-6 6-6':'M9 18l6-6-6-6'}"/></svg>`;
+    return `<div class="qhead"><button class="qnav" data-qnav="-1" title="${T('prevV')}">${chev(-1)}</button><div class="qmid"><span class="qar" dir="rtl" lang="ar">${esc(su.name)}</span><span>${su.n}. ${esc(su.tr)} · ${esc(F ? F[q.s-1].en : su.en)} · ${su.ar.length} ${T('verses')}</span></div><button class="qnav" data-qnav="1" title="${T('nextV')}">${chev(1)}</button></div>${rows}${T('qNote')?`<div class="qnote">${T('qNote')}</div>`:''}`;
+  }
+  let frLoading = false;
+  function loadFr(){
+    if(window.QURAN_FR || frLoading) return; frLoading = true;
+    const sc = document.createElement('script'); sc.src = 'quran-fr.js';
+    sc.onload = ()=>{ if(view==='day') render(); }; sc.onerror = ()=>{ frLoading = false; };
+    document.head.appendChild(sc);
+  }
+  function refreshPop(){ const el=document.getElementById('qpop'); if(el) el.innerHTML = versePanel(qrGet(cur)); }
+
+  function renderDyk(){
+    const dayN = Math.round(fromIso(cur).getTime()/86400000);
+    const k = ((dayN + dykOffset) % DYK.length + DYK.length) % DYK.length, d = DYK[k];
+    $('dyk').innerHTML = `<span class="ic"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></span>
+      <div class="body"><b>${T('dyk')} · ${esc(d.hk?T(d.hk):d.h)}</b>${esc(tx(d))}<small>${esc(d.r)}</small></div>
+      <button class="nx" data-dyknext="1" title="Another one"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>`;
+  }
+  function applyLang(){
+    document.documentElement.lang = LG()==='en' ? 'en' : 'fr';
+    document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on', b.dataset.lang===LG()));
+    document.querySelectorAll('[data-qf]').forEach(b=>b.classList.toggle('on', b.dataset.qf===QF()));
+    $('themeBtn').title = T('settings');
+    document.querySelectorAll('[data-t]').forEach(el=>{ el.textContent = T(el.dataset.t); });
+    document.querySelectorAll('[data-tp]').forEach(el=>{ el.placeholder = T(el.dataset.tp); });
+    setStatus(statusKind);
+    if(LG()!=='en') loadFr();
+  }
+  function applyTheme(){
+    const t = state.theme || 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    document.querySelectorAll('[data-theme-pick]').forEach(b=>b.classList.toggle('on', b.dataset.themePick===t));
+  }
+
+  let view = 'day';
+  function render(){
+    applyTheme();
+    applyLang();
+    $('datePick').value = cur;
+    $('dayView').hidden = view!=='day';
+    $('weekView').hidden = view!=='week';
+    if(view==='week'){ renderWeek(); return; }
+    const t = TODAY(), dd = diffDays(cur,t);
+    $('dateLabel').textContent = fd(cur,'long');
+    $('dateRel').textContent = dd===0?T('today'):dd===-1?T('yesterday'):dd===1?T('tomorrow'):dd<0?T('daysAgo',-dd):T('inDays',dd);
+    $('todayBtn').hidden = dd===0;
+
+    // recurring
+    const r = recDay(cur);
+    renderDyk();
+    const rows = state.recurring.map((name,i)=>{
+      const c = state.cfg[i];
+      if(editingRec){
+        return `<li class="row redit"><span class="num">${i+1}</span><input class="edit" data-ri="${i}" value="${esc(name)}" maxlength="80"></li>`;
+      }
+      const a = r[i], all = isDone(a);
+      let some = a.some(Boolean);
+      let subs = '';
+      const tall = (c.k==='count' && !c.inline) || c.k==='kids';
+      if(c.k==='dots'){
+        subs = `<span class="subs">${a.map((v,j)=>`<button class="dot ${c.sunnah?'sun':''} ${v?'on':''}" data-rp="${i}:${j}" title="${c.sunnah?esc(c.labels[j])+' '+T('rakah'):T('recit')+' '+(j+1)}">${esc(c.labels[j])}</button>`).join('')}<span class="cnt">${a.filter(Boolean).length}/${a.length}</span></span>`;
+      } else if(c.k==='kids'){
+        subs = `<div class="grid3 kidsgrid">${state.kids.map((k,j)=>`<div class="kidcol">
+          <div class="kidhead">
+            <button class="kid ${a[j]?'on':''}" data-rp="${i}:${j}" title="${T('done')}"><i>${ICON.check}</i></button>
+            <input class="kname" data-kn="${k.id}" value="${esc(k.name)}" placeholder="${T('childPh')}" maxlength="30">
+            <button class="krm" data-krm="${k.id}" title="Remove this child">${ICON.del}</button>
+          </div>
+          ${[T('reading'),T('hifz')].map((lab,kk)=>{ const n=noteGet(cur,k.id,kk); return `<div class="nrow"><span>${lab}</span>
+            <select class="nsur ${n.s?'set':''}" data-ns="${k.id}:${kk}">${surahOpts(+n.s)}</select>
+            ${kk===0 ? `<input class="note" data-nt="${k.id}:${kk}" value="${esc(n.v)}" placeholder="${T('versesPh')}" maxlength="40">`
+              : `<span class="hlv">${[1,2,3].map(l=>`<button class="hl hl${l} ${+n.p===l?'on':''}" data-hl="${k.id}:${l}" title="${T('hl'+l)}" aria-label="${T('hl'+l)}">${ICON.check}</button>`).join('')}</span>`}</div>`; }).join('')}
+        </div>`).join('')}
+        <button class="addkid" data-addkid="1">${ICON.plus}<span>${T('addChild')}</span></button></div>`;
+      } else if(c.k==='count' && c.inline){
+        const v = cntDay(cur,i)[0], it = c.items[0]; some = v>0;
+        subs = `<span class="nafil ${c.bonus?'':'du'}">
+          <button class="ctr-b minus" data-cm="${i}:0" title="−${it.step}" ${v?'':'disabled'}>${ICON.minus}</button>
+          <span class="nv">${v} ${T(c.bonus?'rakah':'duaN')}</span>
+          <button class="ctr-b plus" data-cp="${i}:0" title="+${it.step}">${ICON.plus}${it.step}</button></span>`;
+      } else if(c.k==='count'){
+        const cn = cntDay(cur,i); some = cn.some(v=>v>0);
+        const az = azGet(cur), azh = az>=0 ? AZHKAAR[az] : null;
+        subs = `<div class="grid3">${c.items.map((it,j)=>{ const TG=tgt(i,j), v=cn[j], p=Math.min(100,Math.round(v/TG*100));
+          const pick = (c.az && j===0) ? `<div class="azpick">
+              <select class="azsel ${azh?'set':''}" data-az="1"><option value="-1">${T('azPh')}</option>${AZHKAAR.map((a,k)=>`<option value="${k}" ${k===az?'selected':''}>${k+1}. ${esc(a.t)}</option>`).join('')}</select>
+              <button class="qeye ${azPinned&&azh?'on':''}" data-azeye="1" title="${T('showAr')}" ${azh?'':'disabled'}>${EYE}</button>
+            </div>` : '';
+          return `<div class="ctr ${v>=TG?'full':''}">
+            <div class="ctr-top"><span class="ctr-l">${it.l}</span>
+              ${(c.az && j===2)?`<button class="ctr-eye ${drPinned?'on':''}" data-dreye="1" data-drwrap="1" title="Show Darood Ibrahim"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>`:''}
+              <button class="ctr-b minus" data-cm="${i}:${j}" title="Undo (−${it.step})" ${v?'':'disabled'}>${ICON.minus}</button>
+              <button class="ctr-b plus" data-cp="${i}:${j}" title="Add ${it.step}" ${v>=TG?'disabled':''}>${ICON.plus}</button></div>
+            ${(c.az && j===2)?`<div class="drpop" id="drpop" ${drPinned?'':'hidden'}><div class="azar" dir="rtl" lang="ar">${esc(DAROOD.ar)}</div><div class="azen">${esc(tx(DAROOD))}</div><div class="src">${esc(DAROOD.src)}</div></div>`:''}
+            <div class="ctr-bar"><i style="width:${p}%"></i></div>
+            <div class="ctr-foot"><span class="ctr-sec" title="${it.sec} s each">${fmtSec(v*it.sec)}</span><span class="ctr-v">${v}<small> / </small><input class="tgt" type="number" min="1" max="99999" value="${TG}" data-tg="${i}:${j}" title="Target \u2013 change it any time"></span></div>
+            ${pick}</div>`; }).join('')}</div>`;
+      }
+      if(c.dua){
+        const du = duGet(cur), duh = du>=0 ? DUAS[du] : null;
+        subs += `<div class="azpick duapick">
+          <select class="azsel ${duh?'set':''}" data-du="1"><option value="-1">${T('duPh')}</option>${DUAS.map((a,k)=>`<option value="${k}" ${k===du?'selected':''}>${k+1}. ${esc(a.t)}</option>`).join('')}</select>
+          <button class="qeye ${duPinned&&duh?'on':''}" data-dueye="1" title="${T('showAr')}" ${duh?'':'disabled'}>${EYE}</button>
+        </div>`;
+      }
+      if(i===0){
+        const q = qrGet(cur), sn = (window.QURAN||[])[q.s-1];
+        const opts = (window.QURAN ? QURAN.map(x=>`<option value="${x.n}" ${x.n===q.s?'selected':''}>${x.n}. ${esc(x.tr)}</option>`).join('') : `<option value="${q.s}">Surah ${q.s}</option>`);
+        subs = `<span class="qpick" data-qwrap="1">
+          <select class="qs" data-qs="1" title="Surah">${opts}</select>
+          <input class="qv" type="number" min="1" max="${sn?sn.ar.length:286}" value="${q.v}" data-qv="1" title="Verse">
+          <button class="qeye ${qPinned?'on':''}" data-qeye="1" title="Show verse (with the one before and after)"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </span>`;
+      }
+      let durHtml = '';
+      if(c.k==='count'){
+        durHtml = c.bonus ? `<span class="dur fixed calc" title="${c.items[0].sec} s / ${T('rakah')}">${fmtSec(secsOf(i,cur))}</span>`
+          : `<span class="dur fixed calc" title="${c.items.map(it=>it.l+' '+it.sec+' s').join(', ')}">${fmtSec(secsOf(i,cur))}<small> / ${fmtSec(secsPlan(i))}</small></span>`;
+      } else if(typeof c.dur==='number'){
+        durHtml = `<span class="dur fixed" title="Fixed time">${c.dur} min</span>`;
+      } else if(Array.isArray(c.dur)){
+        const m = minsOf(i,cur); let o='';
+        for(let v=c.dur[0]; v<=c.dur[1]; v+=5) o += `<option value="${v}" ${v===m?'selected':''}>${v} min</option>`;
+        durHtml = `<select class="dur set" data-rd="${i}" title="Time (${c.dur[0]}–${c.dur[1]} min)">${o}</select>`;
+      }
+      return `<li class="row rrow ${tall?'tall':''} ${all?'done':some?'part':''}">
+        <button class="tick" data-rt="${i}" aria-label="Toggle">${ICON.check}</button>
+        <div class="rbody"><span class="txt" data-rt="${i}">${esc(dispName(i))}</span>${subs}</div>
+        ${durHtml}
+        ${i===0?`<div class="qpop" id="qpop" ${qPinned?'':'hidden'}>${versePanel(qrGet(cur))}</div>`:''}
+        ${(c.az && azPinned && azGet(cur)>=0)?(()=>{ const z=AZHKAAR[azGet(cur)]; return `<div class="qpop apop"><div class="azar" dir="rtl" lang="ar">${esc(z.ar)}</div><div class="azen">${esc(tx(z))}</div></div>`; })():''}
+        ${(c.dua && duPinned && duGet(cur)>=0)?(()=>{ const z=DUAS[duGet(cur)], A=duaArabic(z); return `<div class="qpop apop"><div class="azar ${A[1]}" dir="rtl" lang="ar">${esc(A[0])}</div><div class="azen">${esc(tx(z))}</div><div class="src">${esc(z.r)}</div></div>`; })():''}
+      </li>`;
+    });
+    if(editingRec) $('recList').innerHTML = rows.join('');
+    else {
+      const used = new Set(); let gh = '';
+      GROUPS.forEach(g=>{
+        g.items.forEach(i=>used.add(i));
+        const cn = g.items.filter(i=>counts(i,cur)), dn = cn.filter(i=>isDone(r[i])).length, open = !!(state.open||{})[g.id];
+        gh += `<li class="grp g-${g.id} ${open?'open':''} ${cn.length&&dn===cn.length?'full':''}">
+          <button class="grp-h" data-gt="${g.id}" aria-expanded="${open}">
+            <span class="gi"><svg viewBox="0 0 24 24">${g.ic}</svg></span><span class="gt">${T(g.t)}</span>
+            <span class="gc">${dn===cn.length&&cn.length?ICON.check:''}${dn}/${cn.length}</span>
+            <span class="gv"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>${open?`<ul class="grp-b">${g.items.map(i=>rows[i]).join('')}</ul>`:''}</li>`;
+      });
+      $('recList').innerHTML = gh + rows.filter((_,i)=>!used.has(i)).join('');
+    }
+    $('editRec').querySelector('span').textContent = editingRec ? T('done') : T('rename');
+
+    // main
+    const list = tasksFor(cur);
+    const open = list.filter(x=>!x.doneHere), done = list.filter(x=>x.doneHere);
+    $('cAll').textContent = list.length; $('cOpen').textContent = open.length; $('cDone').textContent = done.length;
+    const sortOpen = a => a.sort((x,y)=> (y.t.pri?1:0)-(x.t.pri?1:0) || x.t.created.localeCompare(y.t.created));
+    sortOpen(open);
+    let html='';
+    const row = ({t,doneHere})=>{
+      let tag='';
+      if(!doneHere && t.created < cur){
+        const age = diffDays(cur,t.created);
+        tag = `<span class="pill ${age>=3?'age':'carry'}" title="Added ${shortDate(t.created)}">${age===1?T('fromYest'):age+' '+T('days')}</span>`;
+      }
+      return `<li class="row ${doneHere?'done':''} ${t.pri&&!doneHere?'pri':''}" data-id="${t.id}">
+        <button class="tick" data-act="tick" aria-label="Toggle">${ICON.check}</button>
+        <span class="txt" data-act="edit">${esc(t.text)}</span>${tag}
+        <span class="act">
+          <button class="flag" data-act="pri" title="Flag as priority">${ICON.flag}</button>
+          <button class="del" data-act="del" title="Delete">${ICON.del}</button>
+        </span></li>`;
+    };
+    if(filter!=='done') html += open.map(row).join('');
+    if(filter==='all' && open.length && done.length) html += `<li class="sep">${T('completed')}</li>`;
+    if(filter!=='open') html += done.map(row).join('');
+    if(!html){
+      html = `<li class="empty">${filter==='done'?T('e1'):list.length?T('e2'):T('e3')}</li>`;
+    }
+    $('taskList').innerHTML = html;
+
+    // stats
+    let recDone = 0, NN = 0; r.forEach((a,i)=>{ if(counts(i,cur)){ NN++; if(isDone(a)) recDone++; } });
+    const total = NN + list.length, got = recDone + done.length;
+    $('pVal').textContent = got+' / '+total;
+    $('pBar').style.width = (total?Math.round(got/total*100):0)+'%';
+    $('oVal').textContent = open.length + (NN - recDone);
+    let plan = 0, spent = 0;
+    state.recurring.forEach((_,i)=>{ const c=state.cfg[i]; if(c.k==='count'){ if(!c.bonus) plan += secsPlan(i)/60; spent += secsOf(i,cur)/60; return; } const m = minsOf(i,cur); plan += m; if(isDone(r[i])) spent += m; });
+    $('tVal').textContent = spent ? fmtMins(spent) : '0 min';
+    $('tSub').textContent = T('ofPlanned', fmtMins(plan));
+    const sk = streak();
+    $('sVal').textContent = sk + ' ' + T(sk===1?'day':'days');
+  }
+
+  /* ---------- events ---------- */
+  $('prev').onclick = ()=>{ cur=addDays(cur, view==='week'?-7:-1); render(); };
+  $('next').onclick = ()=>{ cur=addDays(cur, view==='week'?7:1); render(); };
+  $('views').addEventListener('click', e=>{
+    const b = e.target.closest('.vtab'); if(!b) return;
+    view = b.dataset.v;
+    document.querySelectorAll('.vtab').forEach(x=>x.classList.toggle('on', x===b));
+    render();
+  });
+  $('todayBtn').onclick = ()=>{ cur=TODAY(); render(); };
+  $('datePick').addEventListener('change', e=>{ if(/^\d{4}-\d{2}-\d{2}$/.test(e.target.value)){ cur=e.target.value; render(); } });
+
+  $('recList').addEventListener('click', e=>{
+    if(editingRec) return;
+    const gt = e.target.closest('[data-gt]');
+    if(gt){ state.open = state.open||{}; state.open[gt.dataset.gt] = !state.open[gt.dataset.gt]; save(); render(); return; }
+    const hl = e.target.closest('[data-hl]');
+    if(hl){ const [id,l] = hl.dataset.hl.split(':'); const n = noteGet(cur,id,1); noteSet(cur,id,1,'p', +n.p===+l ? 0 : +l); save(); render(); return; }
+    if(e.target.closest('[data-dreye]')){ drPinned=!drPinned; render(); return; }
+    if(e.target.closest('[data-azeye]')){ azPinned=!azPinned; render(); return; }
+    if(e.target.closest('[data-dueye]')){ duPinned=!duPinned; render(); return; }
+    const qn = e.target.closest('[data-qnav]');
+    if(qn){ qStep(+qn.dataset.qnav); qPinned=true; save(); render(); return; }
+    if(e.target.closest('#drpop')) return;
+    const cb = e.target.closest('[data-cp],[data-cm]');
+    if(cb){
+      const [i,j] = (cb.dataset.cp||cb.dataset.cm).split(':').map(Number), it = state.cfg[i].items[j];
+      const cn = cntDay(cur,i); cn[j] = Math.max(0, Math.min(state.cfg[i].inline ? 100 : tgt(i,j), cn[j] + (cb.dataset.cp!==undefined ? it.step : -it.step)));
+      setCnt(cur,i,cn); save(); render(); return;
+    }
+    const ak = e.target.closest('[data-addkid]');
+    if(ak){ state.kids.push({id:newId(), name:''}); save(); render(); const f=document.querySelector('.kname[data-kn="'+state.kids[state.kids.length-1].id+'"]'); f&&f.focus(); return; }
+    const rm = e.target.closest('[data-krm]');
+    if(rm){
+      const id = rm.dataset.krm, j = state.kids.findIndex(k=>k.id===id); if(j<0) return;
+      const k = state.kids[j]; state.kids.splice(j,1); if(!state.kids.length) state.kids.push({id:newId(), name:''});
+      save(); render(); toast(T('removed', k.name||T('child'))); return;
+    }
+    const qe = e.target.closest('[data-qeye]');
+    if(qe){ qPinned=!qPinned; render(); return; }
+    if(e.target.closest('input,select')) return;
+    const r = recDay(cur);
+    const p = e.target.closest('[data-rp]');
+    if(p){ const [i,j]=p.dataset.rp.split(':').map(Number);
+      if(state.cfg[i].k==='kids'){ setKid(cur, state.kids[j].id, !r[i][j]); save(); render(); return; }
+      r[i][j]=!r[i][j]; state.rec[cur]=r; save(); render(); return; }
+    const el = e.target.closest('[data-rt]'); if(!el) return;
+    const i = +el.dataset.rt, to = !isDone(r[i]);
+    if(state.cfg[i].k==='count'){ setCnt(cur,i,state.cfg[i].items.map(it=>to?it.max:0)); save(); render(); return; }
+    if(state.cfg[i].k==='kids'){ state.kids.forEach(k=>setKid(cur,k.id,to)); save(); render(); return; }
+    r[i] = r[i].map(()=>to); state.rec[cur] = r; save(); render();
+  });
+  $('recList').addEventListener('change', e=>{
+    if(e.target.dataset.tg!==undefined){ const [i,j]=e.target.dataset.tg.split(':').map(Number); setTgt(i,j,e.target.value); setCnt(cur,i,cntDay(cur,i)); save(); render(); return; }
+    if(e.target.dataset.az!==undefined){ azSet(cur,+e.target.value); azPinned = +e.target.value>=0; save(); render(); return; }
+    if(e.target.dataset.du!==undefined){ duSet(cur,+e.target.value); duPinned = +e.target.value>=0; save(); render(); return; }
+    if(e.target.dataset.ns!==undefined){ const [id,k]=e.target.dataset.ns.split(':'); noteSet(cur,id,+k,'s',+e.target.value); save(); e.target.classList.toggle('set',+e.target.value>0); return; }
+    if(e.target.dataset.qs!==undefined){ qrSet(cur,+e.target.value,1); save(); render(); return; }
+    if(e.target.dataset.rd===undefined) return;
+    const du = durDay(cur); du[+e.target.dataset.rd] = +e.target.value; state.dur[cur] = du; save(); render();
+  });
+  $('recList').addEventListener('input', e=>{
+    const d = e.target.dataset;
+    if(d.ri!==undefined){ state.recurring[+d.ri] = e.target.value; save(); }
+    else if(d.nt!==undefined){ const [id,k]=d.nt.split(':'); noteSet(cur,id,+k,'v',e.target.value); save(); }
+    else if(d.kn!==undefined){ const k=state.kids.find(x=>x.id===d.kn); if(k){ k.name=e.target.value; save(); } }
+    else if(d.qv!==undefined){ const q=qrGet(cur); qrSet(cur,q.s,Math.max(1,+e.target.value||1)); save(); refreshPop(); }
+  });
+  $('recList').addEventListener('keydown', e=>{ if(e.key==='Enter'){ editingRec=false; render(); } });
+  $('recList').addEventListener('mouseover', e=>{ if(!qPinned && e.target.closest('[data-qwrap]')){ const p=$('qpop'); if(p){ p.hidden=false; refreshPop(); } } });
+  $('recList').addEventListener('mouseout', e=>{ if(!qPinned && e.target.closest('[data-qwrap]') && !e.relatedTarget?.closest?.('[data-qwrap],#qpop')){ const p=$('qpop'); if(p) p.hidden=true; } });
+  $('recList').addEventListener('mouseleave', ()=>{ if(!qPinned){ const p=$('qpop'); if(p) p.hidden=true; } if(!drPinned){ const p=$('drpop'); if(p) p.hidden=true; } });
+  $('recList').addEventListener('mouseover', e=>{ if(!drPinned && e.target.closest('[data-drwrap]')){ const p=$('drpop'); if(p) p.hidden=false; } });
+  $('recList').addEventListener('mouseout', e=>{ if(!drPinned && e.target.closest('[data-drwrap],#drpop') && !e.relatedTarget?.closest?.('[data-drwrap],#drpop')){ const p=$('drpop'); if(p) p.hidden=true; } });
+  $('dyk').addEventListener('click', e=>{ if(e.target.closest('[data-dyknext]')){ dykOffset++; renderDyk(); } });
+  $('themeBtn').onclick = e=>{ e.stopPropagation(); $('themeMenu').hidden = !$('themeMenu').hidden; };
+  $('themeMenu').addEventListener('click', e=>{
+    const lb=e.target.closest('[data-lang]'); if(lb){ state.lang=lb.dataset.lang; save(); render(); return; }
+    const fb=e.target.closest('[data-qf]'); if(fb){ state.qfont=fb.dataset.qf; save(); render(); return; }
+    const b=e.target.closest('[data-theme-pick]'); if(!b) return; state.theme=b.dataset.themePick; save(); applyTheme(); $('themeMenu').hidden=true; });
+  document.addEventListener('click', e=>{ if(!e.target.closest('.theme-wrap')) $('themeMenu').hidden=true; });
+  $('editRec').onclick = ()=>{
+    editingRec = !editingRec;
+    if(!editingRec){
+      state.recurring = state.recurring.map((n,i)=>n.trim()||(T('dailyTask')+' '+(i+1)));
+    }
+    save(); render();
+    if(editingRec){ const f=document.querySelector('#recList input'); f&&f.focus(); }
+  };
+
+  $('addForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const v = $('addInput').value.trim(); if(!v) return;
+    state.tasks.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), text:v, created:cur, done:false, doneDate:null, pri:false});
+    $('addInput').value=''; if(filter==='done') setFilter('all');
+    save(); render();
+  });
+
+  $('taskList').addEventListener('click', e=>{
+    const b = e.target.closest('[data-act]'); if(!b) return;
+    const li = b.closest('li'); const t = state.tasks.find(x=>x.id===li.dataset.id); if(!t) return;
+    const act = b.dataset.act;
+    if(act==='tick'){
+      const doneHere = t.done && t.doneDate===cur;
+      if(doneHere){ t.done=false; t.doneDate=null; } else { t.done=true; t.doneDate=cur; }
+      save(); render();
+    } else if(act==='pri'){ t.pri=!t.pri; save(); render(); }
+    else if(act==='del'){
+      const i = state.tasks.indexOf(t); state.tasks.splice(i,1); save(); render();
+      lastDeleted = {t, i}; toastUndo();
+    } else if(act==='edit'){
+      if(li.querySelector('input.edit')) return;
+      const inp = document.createElement('input'); inp.className='edit'; inp.value=t.text; inp.maxLength=200;
+      b.replaceWith(inp); inp.focus(); inp.select();
+      const finish = keep=>{ if(keep){ const v=inp.value.trim(); if(v && v!==t.text){ t.text=v; save(); } } render(); };
+      inp.addEventListener('keydown', ev=>{ if(ev.key==='Enter') finish(true); if(ev.key==='Escape') finish(false); });
+      inp.addEventListener('blur', ()=>finish(true), {once:true});
+    }
+  });
+
+  let lastDeleted=null;
+  function toastUndo(){
+    const t=$('toast'); t.innerHTML=T('taskDel')+' · <u style="cursor:pointer;pointer-events:auto" id="undo">'+T('undo')+'</u>';
+    t.style.pointerEvents='auto'; t.classList.add('show'); clearTimeout(t._h);
+    $('undo').onclick=()=>{ if(lastDeleted){ state.tasks.splice(lastDeleted.i,0,lastDeleted.t); lastDeleted=null; save(); render(); } t.classList.remove('show'); };
+    t._h=setTimeout(()=>{ t.classList.remove('show'); t.style.pointerEvents='none'; },4000);
+  }
+
+  $('clearDone').onclick = ()=>{
+    const n = state.tasks.filter(x=>x.done && x.doneDate<=cur).length;
+    if(!n){ toast(T('noneClear')); return; }
+    state.tasks = state.tasks.filter(x=>!(x.done && x.doneDate<=cur)); save(); render(); toast(T('cleared',n));
+  };
+
+  function setFilter(f){ filter=f; document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.f===f)); }
+  $('tabs').addEventListener('click', e=>{ const b=e.target.closest('.tab'); if(!b) return; setFilter(b.dataset.f); render(); });
+
+  // backup / restore (in-page, no downloads)
+  $('copyBk').onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(JSON.stringify(state)); toast(T('bkCopied')); }
+    catch(e){ $('restorePanel').hidden=false; $('restoreText').value=JSON.stringify(state); $('restoreText').select(); toast(T('bkSelect')); }
+  };
+  $('restoreBk').onclick = ()=>{ $('restorePanel').hidden=false; $('restoreText').value=''; $('restoreText').focus(); };
+  $('restoreCancel').onclick = ()=>{ $('restorePanel').hidden=true; };
+  $('restoreGo').onclick = ()=>{
+    try{ const s=JSON.parse($('restoreText').value); if(!valid(s)) throw 0; state=s; migrate(); save(); render(); $('restorePanel').hidden=true; toast(T('bkRestored')); }
+    catch(e){ toast(T('bkBad')); }
+  };
+
+  // roll over to the new day if the page is left open past midnight
+  let lastToday = TODAY();
+  setInterval(()=>{ const t=TODAY(); if(t!==lastToday){ if(cur===lastToday) cur=t; lastToday=t; render(); } }, 60000);
+
+  render();
+  if(!window.QURAN){ const qd=document.querySelector('script[src="quran-data.js"]'); qd && qd.addEventListener('load', ()=>{ if(view==='day') render(); }); }
+})();
+</script>
+<script>
+  // Offline support / installable app (only on a real website such as GitHub Pages)
+  if('serviceWorker' in navigator && location.protocol==='https:'){
+    window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+  }
+</script>
+</body>
+</html>
